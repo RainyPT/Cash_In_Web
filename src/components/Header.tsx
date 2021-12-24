@@ -1,24 +1,23 @@
 import React from 'react'
-import { Container, Nav, Navbar } from 'react-bootstrap';
+import { Col, Container, Nav, Navbar, Row } from 'react-bootstrap';
+import { useParams, useNavigate } from "react-router-dom";
+import HEADER_LOGO from './img/HEADER_LOGO.png'
 
 const Header = () => {
+    let navigate = useNavigate();
     return (
         <div className='Header'>
-            <Navbar bg="dark" variant="dark">
-                <Container>
-                    <Navbar.Brand href="#home">WebSpending</Navbar.Brand>
-                    <Nav className="me-auto">
-                        <Nav.Link href="#home">Home</Nav.Link>
-                        <Nav.Link href="#features">Features</Nav.Link>
-                        <Nav.Link href="#pricing">Pricing</Nav.Link>
-                    </Nav>
-                    <Navbar.Collapse className="justify-content-end">
-                        <Navbar.Text>
-                            <a href="#login">Login</a>
-                        </Navbar.Text>
-                    </Navbar.Collapse>
-                </Container>
-            </Navbar>
+            <Container>
+                <Row>
+                    <Col>
+                    </Col>
+                    <Col>
+                        <img src={HEADER_LOGO} alt='Logo' id="headerLogo"/>
+                    </Col>
+                    <Col>
+                    </Col>
+                </Row>
+            </Container>
         </div>
     )
 }

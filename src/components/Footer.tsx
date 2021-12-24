@@ -1,17 +1,26 @@
 import React from 'react'
-import { Container, Navbar } from 'react-bootstrap';
+import { Col, Container, Navbar, Row } from 'react-bootstrap';
+import FOOTER_LOGO from './img/FOOTER_LOGO.png'
 
 const Footer = () => {
     return (
-        <Navbar bg="dark" variant="dark">
-                <Container>
-                <Navbar.Collapse className="justify-content-center">
-                        <Navbar.Text>
-                            <p>Copyright © {new Date().getFullYear()}: <span><a href="google.com">webspending.com</a></span></p>
-                        </Navbar.Text>
-                    </Navbar.Collapse>
-                </Container>
-        </Navbar>
+        <div className='Footer'>
+            <Container>
+                <Row>
+                    <Col><img src={FOOTER_LOGO} id="footerLogo" alt='footerLogo' /></Col>
+                </Row>
+                <Row>
+                    <Col><a className="about-link" href="#">Contact us</a></Col>
+                    <Col><a className="about-link" href="#">Contact us</a></Col>
+                    <Col><a className="about-link" href="#">Contact us</a></Col>
+                </Row>
+                <Row>
+                    <Col><a className="about-link" href="#">Contact us</a></Col>
+                    <Col><a className="about-link" href="#">Contact us</a></Col>
+                    <Col><a className="about-link" href="#">Contact us</a></Col>
+                </Row>
+            </Container>
+        </div>
     )
 }
 export default Footer;
