@@ -24,7 +24,7 @@
 }
 .Header {
   background-color: #fffeee;
-  padding-bottom: 50  px;
+  padding: 20px;
 }
 #headerLogo {
   margin-left: auto;
@@ -48,6 +48,10 @@
   border-radius: 30%;
 }
 .LoginComp{
-  padding:10%;
+  padding:5%;
+  background-color: #fffeee;
+}
+.RegisterComp{
+  padding:5%;
   background-color: #fffeee;
 }

@@ -6,15 +6,20 @@ import {
   Routes,
   Route
 } from "react-router-dom";
-import {Home,Login} from './App';
+import Home from './App';
+import Login from './routes/Login'
+import Register from './routes/Register'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(
+  <React.StrictMode>
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="login" element={<Login/>} />
+      <Route path="register" element={<Register/>} />
     </Routes>
-  </BrowserRouter>,
+  </BrowserRouter>
+  </React.StrictMode>,
   document.getElementById('root')
 );

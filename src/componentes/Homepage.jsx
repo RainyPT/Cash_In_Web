@@ -4,11 +4,12 @@ import LOGO_DI from "./img/dilogo.png";
 import CHICO_IMG from "./img/chico.jpeg";
 import { Col, Container, Row, Button } from "react-bootstrap";
 import PersonCard from "./PersonCard";
+import { useNavigate} from "react-router-dom";
 
 function Homepage() {
-
+  const navigate = useNavigate();
   const redirectToRegister=()=>{
-    console.log("redirected")
+    navigate("/register");
   }
   return (
     <div className="Homepage">

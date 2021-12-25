@@ -1,5 +1,4 @@
 import { Col, Container, Row, Button, Form } from "react-bootstrap";
-import LOGO_DI from "./img/dilogo.png";
 function LoginComp() {
   return (
     <div className="LoginComp">
@@ -7,20 +6,36 @@ function LoginComp() {
         <Row>
           <Col></Col>
           <Col>
-            <Form>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Email address</Form.Label>
-                <Form.Control type="email" placeholder="Enter your email" />
-                <Form.Text className="text-muted">
-                  We'll never share your email with anyone else ;) .
-                </Form.Text>
-              </Form.Group>
-
-              <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" />
-              </Form.Group>
-              <Button style={{"backgroundColor": "#f2b90c","borderColor": "#f2b90c"}} variant="primary" type="submit">
+            <Form
+              style={{
+                backgroundColor: "white",
+                borderRadius: "5%",
+                boxShadow: "0px 2px 5px grey",
+                padding: "20px",
+              }}
+            >
+            <h2 style={{"text-align":"center","margin-bottom":"20px"}}>Login</h2>
+              <Form.Floating className="mb-3">
+                <Form.Control
+                  id="floatingInputCustom"
+                  type="email"
+                  placeholder="name@example.com"
+                />
+                <label htmlFor="floatingInputCustom">Email address</label>
+              </Form.Floating>
+              <Form.Floating>
+                <Form.Control
+                  id="floatingPasswordCustom"
+                  type="password"
+                  placeholder="Password"
+                />
+                <label htmlFor="floatingPasswordCustom">Password</label>
+              </Form.Floating>
+              <Button
+                style={{ backgroundColor: "#f2b90c", borderColor: "#f2b90c","margin-top":"20px" }}
+                variant="primary"
+                type="submit"
+              >
                 Submit
               </Button>
             </Form>
