@@ -1,6 +1,10 @@
 import { Col, Container, Row, Button, Form } from "react-bootstrap";
-import React from "react";
+import { useNavigate } from "react-router-dom";
 function LoginComp() {
+  const navigate = useNavigate();
+  const redirectToExpenses = () => {
+    navigate("/expenses");
+  };
   return (
     <div className="LoginComp">
       <Container>
@@ -42,6 +46,7 @@ function LoginComp() {
                 }}
                 variant="primary"
                 type="submit"
+                onClick={redirectToExpenses}
               >
                 Submit
               </Button>

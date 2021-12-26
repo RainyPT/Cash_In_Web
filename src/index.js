@@ -8,6 +8,7 @@ import Register from "./routes/Register";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Header from "./componentes/Header";
 import Footer from "./componentes/Footer";
+import Expenses from "./routes/Expenses";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -17,6 +18,7 @@ ReactDOM.render(
         <Route path="/" element={<App />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
+        <Route path="expenses" element={<Expenses />} />
       </Routes>
       <Footer />
     </BrowserRouter>
