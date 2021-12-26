@@ -1,5 +1,6 @@
 import React from "react";
 import LOGO_UBI from "./img/LOGO_UBI.png";
+import logoIW from "./img/logoIW.png";
 import LOGO_DI from "./img/dilogo.png";
 import CHICO_IMG from "./img/chico.jpeg";
 import { Col, Container, Row, Button } from "react-bootstrap";
@@ -94,7 +95,7 @@ function Homepage() {
                 </Col>
                 <Col>
                   <img
-                    src={LOGO_UBI}
+                    src={logoIW}
                     className="homepage-partner-logo"
                     alt="logo da ubi"
                   ></img>

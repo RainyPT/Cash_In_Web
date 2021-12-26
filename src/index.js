@@ -9,6 +9,7 @@ import {
 import Home from './App';
 import Login from './routes/Login'
 import Register from './routes/Register'
+import Expenses from "./routes/Expenses"
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(
@@ -18,6 +19,7 @@ ReactDOM.render(
       <Route path="/" element={<Home />} />
       <Route path="login" element={<Login/>} />
       <Route path="register" element={<Register/>} />
+      <Route path="expenses" element={<Expenses/>} />
     </Routes>
   </BrowserRouter>
   </React.StrictMode>,
