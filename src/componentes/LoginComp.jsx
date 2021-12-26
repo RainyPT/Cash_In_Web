@@ -1,4 +1,5 @@
 import { Col, Container, Row, Button, Form } from "react-bootstrap";
+import React from "react";
 function LoginComp() {
   return (
     <div className="LoginComp">
@@ -14,7 +15,9 @@ function LoginComp() {
                 padding: "20px",
               }}
             >
-            <h2 style={{"text-align":"center","margin-bottom":"20px"}}>Login</h2>
+              <h2 style={{ "text-align": "center", "margin-bottom": "20px" }}>
+                Login
+              </h2>
               <Form.Floating className="mb-3">
                 <Form.Control
                   id="floatingInputCustom"
@@ -32,7 +35,11 @@ function LoginComp() {
                 <label htmlFor="floatingPasswordCustom">Password</label>
               </Form.Floating>
               <Button
-                style={{ backgroundColor: "#f2b90c", borderColor: "#f2b90c","margin-top":"20px" }}
+                style={{
+                  backgroundColor: "#f2b90c",
+                  borderColor: "#f2b90c",
+                  "margin-top": "20px",
+                }}
                 variant="primary"
                 type="submit"
               >

@@ -32,6 +32,9 @@
   display: block;
   width: 350px;
 }
+#headerLogo:hover{
+  cursor: pointer;
+}
 .about-link {
   color: #f2b90c;
   text-decoration: none;

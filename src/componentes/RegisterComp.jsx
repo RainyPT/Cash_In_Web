@@ -1,4 +1,5 @@
 import { Col, Container, Row, Button, Form } from "react-bootstrap";
+import React from "react";
 function RegisterComp() {
   return (
     <div className="RegisterComp">
@@ -18,7 +19,7 @@ function RegisterComp() {
                 Register
               </h2>
               <Form.Group className="mb-3" controlId="formBasicName">
-              <Form.Label>Name</Form.Label>
+                <Form.Label>Name</Form.Label>
                 <Row>
                   <Col>
                     <Form.Control type="text" placeholder="First name" />
@@ -42,7 +43,11 @@ function RegisterComp() {
               </Form.Group>
 
               <Button
-                style={{ backgroundColor: "#f2b90c", borderColor: "#f2b90c","margin-top":"20px" }}
+                style={{
+                  backgroundColor: "#f2b90c",
+                  borderColor: "#f2b90c",
+                  "margin-top": "20px",
+                }}
                 variant="primary"
                 type="submit"
               >

@@ -1,12 +1,9 @@
-import Header from "./componentes/Header"
-import Homepage from "./componentes/Homepage"
-import Footer from "./componentes/Footer"
-export default function Home() {
+import Homepage from "./componentes/Homepage";
+import React from "react";
+export default function App() {
   return (
     <div className="App">
-    <Header/>
-    <Homepage/>
-    <Footer/>
+      <Homepage />
     </div>
   );
 }
