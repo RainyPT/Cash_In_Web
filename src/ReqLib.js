@@ -18,11 +18,21 @@ axios.interceptors.response.use(
     return response;
   },
   function (error) {
-    console.log(error.response);
     if (error.response.status === 422) {
       return Promise.reject({
         ack: 0,
         message: "Repeated or invalid credentials!",
+      });
+    }
+    if (error.response.status === 401) {
+      if (Cookies.get("userToken")) {
+        Cookies.remove("userToken");
+        localStorage.removeItem()
+      }
+      window.location.replace("/login");
+      return Promise.reject({
+        ack: 0,
+        message: "Not Authorized!",
       });
     }
     return Promise.reject({ ack: 0, message: error.response.statusText });
@@ -48,6 +58,16 @@ export const register = async (reqOBJ) => {
 export const listExpenses = async () => {
   try {
     const res = await axios.get("api/expenses", {
+      headers: ProtectedHeaders(),
+    });
+    console.log(res);
+  } catch (err) {
+    return err;
+  }
+};
+export const getAuthedUser = async () => {
+  try {
+    const res = await axios.get("api/user", {
       headers: ProtectedHeaders(),
     });
     console.log(res);

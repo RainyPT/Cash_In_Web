@@ -8,16 +8,17 @@ import Register from "./routes/Register";
 import Expensespage from "./routes/Expenses";
 import Graphspage from "./routes/Graphs";
 import Cookies from "js-cookie";
+
 export default function App() {
   function RequireAuth({ children }) {
-    return localStorage.getItem("userEmail") ? (
+    return Cookies.get("userToken") ? (
       children
     ) : (
       <Navigate to="/login" replace />
     );
   }
   function IsAuth({ children }) {
-    return localStorage.getItem("userEmail") ? (
+    return Cookies.get("userToken") ? (
       <Navigate to="/expenses" replace />
     ) : (
       children
@@ -27,7 +28,14 @@ export default function App() {
     <BrowserRouter>
       <Header />
       <Routes>
-        <Route path="/" element={<Homepage />} />
+        <Route
+          path="/"
+          element={
+            <IsAuth>
+              <Homepage />
+            </IsAuth>
+          }
+        />
         <Route
           path="login"
           element={
@@ -44,6 +52,7 @@ export default function App() {
             </IsAuth>
           }
         />
+
         <Route
           path="expenses"
           element={

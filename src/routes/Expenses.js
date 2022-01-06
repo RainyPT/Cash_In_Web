@@ -7,24 +7,18 @@ import {
   ButtonGroup,
 } from "react-bootstrap";
 import { useEffect } from "react";
-import { listExpenses } from "../ReqLib";
+import { getAuthedUser } from "../ReqLib";
 export default function Expensespage() {
-  useEffect(() => {
-    async function getExpenses() {
-      await listExpenses();
-    }
-    getExpenses();
-  }, []);
   return (
     <div className="Expensespage">
       <Container style={{ height: "100vh" }}>
         <center>
-          <buttongroup>
+          <ButtonGroup>
             <button className="doubleButton">EXPENSES</button>
             <button className="doubleButton" id="doubleButton2">
               Categories
             </button>
-          </buttongroup>
+          </ButtonGroup>
         </center>
 
         <Container>

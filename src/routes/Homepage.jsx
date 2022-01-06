@@ -6,7 +6,6 @@ import CHICO_IMG from "../componentes/img/chico.jpeg";
 import { Col, Container, Row, Button } from "react-bootstrap";
 import PersonCard from "../componentes/PersonCard";
 import { useNavigate } from "react-router-dom";
-
 function Homepage() {
   const navigate = useNavigate();
   const redirectToRegister = () => {

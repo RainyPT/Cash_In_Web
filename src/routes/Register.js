@@ -35,10 +35,10 @@ export default function Register() {
                 padding: "20px",
               }}
             >
-              <h2 style={{ "text-align": "center", "margin-bottom": "20px" }}>
+              <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
                 Register
               </h2>
-              <Form.Group className="mb-3" controlId="formBasicName">
+              <Form.Group className="mb-3">
                 <Form.Label>Name</Form.Label>
                 <Row>
                   <Col>
@@ -46,6 +46,7 @@ export default function Register() {
                       type="text"
                       onChange={(e) => setFirstName(e.target.value)}
                       placeholder="First name"
+                      id="formFirstName"
                     />
                   </Col>
                   <Col>
@@ -53,6 +54,7 @@ export default function Register() {
                       type="text"
                       onChange={(e) => setLastName(e.target.value)}
                       placeholder="Surname"
+                      id="formLastName"
                     />
                   </Col>
                 </Row>
@@ -82,7 +84,7 @@ export default function Register() {
                 style={{
                   backgroundColor: "#f2b90c",
                   borderColor: "#f2b90c",
-                  "margin-top": "20px",
+                  marginTop: "20px",
                 }}
                 variant="primary"
                 onClick={onClickRegister}

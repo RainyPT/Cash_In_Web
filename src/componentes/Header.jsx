@@ -6,13 +6,11 @@ import Cookies from "js-cookie";
 function Header() {
   const navigate = useNavigate();
   const redirectToHome = () => {
-    return localStorage.getItem("userEmail")
-      ? navigate("/expenses")
-      : navigate("/");
+    return Cookies.get("userToken") ? navigate("/expenses") : navigate("/");
   };
   const logout = () => {
     Cookies.remove("userToken");
-    localStorage.removeItem("userEmail");
+    localStorage.removeItem("userID");
     navigate("/");
   };
   return (
@@ -29,9 +27,9 @@ function Header() {
             />
           </Col>
           <Col>
-            {localStorage.getItem("userEmail") ? (
+            {Cookies.get("userToken") ? (
               <>
-                <p>User: {localStorage.getItem("userEmail")}</p>
+                <p>User ID: {localStorage.getItem("userID")}</p>
                 <Button href="#" onClick={logout}>
                   Logout{" "}
                 </Button>

@@ -14,8 +14,7 @@ export default function Login() {
       return;
     }
     Cookies.set("userToken", res.data.token, { expires: 60 * 60 * 24 });
-    localStorage.setItem("userEmail", res.data.user.email);
-    localStorage.getItem("userEmail");
+    localStorage.setItem("userID", res.data.user.id);
     navigate("/expenses");
   };
   return (
@@ -32,7 +31,7 @@ export default function Login() {
                 padding: "20px",
               }}
             >
-              <h2 style={{ "text-align": "center", "margin-bottom": "20px" }}>
+              <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
                 Login
               </h2>
               <Form.Floating className="mb-3">
@@ -57,7 +56,7 @@ export default function Login() {
                 style={{
                   backgroundColor: "#f2b90c",
                   borderColor: "#f2b90c",
-                  "margin-top": "20px",
+                  marginTop: "20px",
                 }}
                 variant="primary"
                 onClick={onClickLogin}
