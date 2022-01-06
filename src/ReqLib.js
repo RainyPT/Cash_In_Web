@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 const axios = require("axios");
 axios.defaults.baseURL = "http://localhost:8000/";
 axios.defaults.withCredentials = true;
@@ -9,6 +10,7 @@ const ProtectedHeaders = () => {
   return {
     Accept: "application/json",
     "Content-Type": "application/json",
+    Authorization: "Bearer " + Cookies.get("userToken"),
   };
 };
 axios.interceptors.response.use(
@@ -39,6 +41,16 @@ export const register = async (reqOBJ) => {
   try {
     const res = await axios.post("api/register", reqOBJ, headers);
     return res;
+  } catch (err) {
+    return err;
+  }
+};
+export const listExpenses = async () => {
+  try {
+    const res = await axios.get("api/expenses", {
+      headers: ProtectedHeaders(),
+    });
+    console.log(res);
   } catch (err) {
     return err;
   }

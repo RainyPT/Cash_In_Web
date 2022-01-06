@@ -10,14 +10,14 @@ import Graphspage from "./routes/Graphs";
 import Cookies from "js-cookie";
 export default function App() {
   function RequireAuth({ children }) {
-    return Cookies.get("isLogged") ? (
+    return localStorage.getItem("userEmail") ? (
       children
     ) : (
       <Navigate to="/login" replace />
     );
   }
   function IsAuth({ children }) {
-    return Cookies.get("isLogged") ? (
+    return localStorage.getItem("userEmail") ? (
       <Navigate to="/expenses" replace />
     ) : (
       children

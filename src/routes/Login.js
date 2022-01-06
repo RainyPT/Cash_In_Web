@@ -13,8 +13,9 @@ export default function Login() {
       alert(res.message);
       return;
     }
-    console.log(res);
-    Cookies.set("isLogged", res.data.user.id, { expires: 60 * 60 * 24 });
+    Cookies.set("userToken", res.data.token, { expires: 60 * 60 * 24 });
+    localStorage.setItem("userEmail", res.data.user.email);
+    localStorage.getItem("userEmail");
     navigate("/expenses");
   };
   return (

@@ -6,7 +6,15 @@ import {
   Button,
   ButtonGroup,
 } from "react-bootstrap";
+import { useEffect } from "react";
+import { listExpenses } from "../ReqLib";
 export default function Expensespage() {
+  useEffect(() => {
+    async function getExpenses() {
+      await listExpenses();
+    }
+    getExpenses();
+  }, []);
   return (
     <div className="Expensespage">
       <Container style={{ height: "100vh" }}>
