@@ -27,7 +27,7 @@ axios.interceptors.response.use(
     if (error.response.status === 401) {
       if (Cookies.get("userToken")) {
         Cookies.remove("userToken");
-        localStorage.removeItem()
+        localStorage.removeItem();
       }
       window.location.replace("/login");
       return Promise.reject({
@@ -61,6 +61,57 @@ export const listExpenses = async () => {
       headers: ProtectedHeaders(),
     });
     console.log(res);
+  } catch (err) {
+    return err;
+  }
+};
+export const forgotPassword = async (reqOBJ) => {
+  try {
+    const res = await axios.post("api/forgotPassword", reqOBJ, {
+      headers: headers,
+    });
+    return res;
+  } catch (err) {
+    return err;
+  }
+};
+export const saveExpense = async (reqOBJ) => {
+  try {
+    const res = await axios.post("api/expenses", reqOBJ, {
+      headers: ProtectedHeaders(),
+    });
+    return res;
+  } catch (err) {
+    return err;
+  }
+};
+export const createCategory = async (reqOBJ) => {
+  try {
+    const res = await axios.post("api/categories", reqOBJ, {
+      headers: ProtectedHeaders(),
+    });
+    return res;
+  } catch (err) {
+    return err;
+  }
+};
+
+export const getUserExpenses = async () => {
+  try {
+    const res = await axios.get("api/expenses", {
+      headers: ProtectedHeaders(),
+    });
+    return res;
+  } catch (err) {
+    return err;
+  }
+};
+export const getUserCategories = async () => {
+  try {
+    const res = await axios.get("api/categories", {
+      headers: ProtectedHeaders(),
+    });
+    return res;
   } catch (err) {
     return err;
   }
