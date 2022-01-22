@@ -20,6 +20,30 @@ import {
 } from "../ReqLib";
 import Expense from "../componentes/Expense";
 import Category from "../componentes/Category";
+
+/*
+import {
+  Card,
+  Col,
+  Container,
+  Row,
+  Button,
+  ButtonGroup,
+  ListGroup,
+  Form,
+  Modal,
+  Dropdown,
+  DropdownButton,
+} from "react-bootstrap";
+import { useEffect, useState } from "react";
+import {
+  getUserExpenses,
+  getUserCategories,
+  saveExpense,
+  createCategory,
+} from "../ReqLib";
+import Expense from "../componentes/Expense";
+import Category from "../componentes/Category";
 export default function Expensespage() {
   const [itemType, setItemType] = useState("Expenses");
   const [opType, setOpType] = useState(null);
@@ -59,35 +83,51 @@ export default function Expensespage() {
     });
   };
   const [selectedCat, setSelectedCat] = useState(null);
+  
+}
+*/
+export default function Expensespage() {
+  //Object Expense
+  const [expense, setExpense] = useState({
+    name: "",
+    value: null,
+    date: null,
+    category: "",
+  });
+  //Object Categories
+  const [category, setCategory] = useState({ name: "", main_category: "" });
+
+  //UI Storage
+  const [itemType, setItemType] = useState("Expenses");
+  const [opType, setOpType] = useState(null);
+  const [expenseArray, setExpenseArray] = useState([]);
+  const [categoryArray, setCategoryArray] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [getStatus, setGetStatus] = useState(false);
+  useEffect(() => {
+    async function expenseGetting() {
+      setCategoryArray(await getUserCategories());
+      setExpenseArray(await getUserExpenses());
+      setGetStatus(true);
+    }
+    expenseGetting();
+  }, []);
+  const selectItemType = (type) => {
+    setItemType(type);
+    setOpType(null);
+  };
+  const selectOpType = (type) => {
+    setOpType(type);
+  };
+  const onSaveExpense = async () => {
+    console.log(expense);
+    await saveExpense(expense);
+  };
+  const onCreateCategory = async () => {
+    await createCategory(category);
+  };
   return (
     <>
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Associate expense to a category</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <DropdownButton
-            alignRight
-            title="Dropdown right"
-            id="dropdown-menu-align-right"
-            onSelect={(e) => {
-              setSelectedCat(e);
-            }}
-          >
-            {getStatus ? (
-              categoryArray.data.map((c) => (
-                <Dropdown.Item eventKey={c.id}>{c.name}</Dropdown.Item>
-              ))
-            ) : (
-              <Dropdown.Item disabled>No Categories</Dropdown.Item>
-            )}
-          </DropdownButton>
-          {selectedCat !== null ? <p>You selected {selectedCat}</p> : <></>}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary">Save Changes</Button>
-        </Modal.Footer>
-      </Modal>
       <div className="Expensespage">
         <Container style={{ height: "100vh" }}>
           <Row>
@@ -176,7 +216,10 @@ export default function Expensespage() {
                                   type="text"
                                   placeholder="Expense name"
                                   onChange={(e) =>
-                                    setExpenseName(e.target.value)
+                                    setExpense({
+                                      ...expense,
+                                      name: e.target.value,
+                                    })
                                   }
                                 />
                               </Form.Group>
@@ -186,7 +229,10 @@ export default function Expensespage() {
                                   type="number"
                                   placeholder="Expense value"
                                   onChange={(e) =>
-                                    setExpenseValue(e.target.value)
+                                    setExpense({
+                                      ...expense,
+                                      value: e.target.value,
+                                    })
                                   }
                                 />
                               </Form.Group>
@@ -196,7 +242,10 @@ export default function Expensespage() {
                                   type="date"
                                   placeholder="Expense date"
                                   onChange={(e) =>
-                                    setExpenseDate(e.target.value)
+                                    setExpense({
+                                      ...expense,
+                                      date: e.target.value,
+                                    })
                                   }
                                 />
                               </Form.Group>
@@ -320,7 +369,10 @@ export default function Expensespage() {
                                   type="text"
                                   placeholder="Category name"
                                   onChange={(e) =>
-                                    setCategoryName(e.target.value)
+                                    setCategory({
+                                      name: e.target.value,
+                                      main_category: 0,
+                                    })
                                   }
                                 />
                               </Form.Group>
