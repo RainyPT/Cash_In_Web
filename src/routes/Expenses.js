@@ -198,6 +198,21 @@ export default function Expensespage() {
                                   }
                                 />
                               </Form.Group>
+                              <DropdownButton
+                                as={ButtonGroup}
+                                align={{ lg: 'end' }}
+                                title="Categories"
+                                id="dropdown-menu-align-responsive-1"
+                                >
+                                {getStatus ? (
+                                    expenseArray.data.map((c) => (
+                                      <Dropdown.Item eventKey={c.id}>{c.name}</Dropdown.Item>
+                                    ))
+                                  ) : (
+                                    <Dropdown.Item disabled>No Categories</Dropdown.Item>
+                                  )}
+                              </DropdownButton>
+                              <br></br>
                               <Button variant="primary" onClick={onSaveExpense}>
                                 Save Expense
                               </Button>
@@ -303,6 +318,20 @@ export default function Expensespage() {
                                   }
                                 />
                               </Form.Group>
+                              <DropdownButton
+                                as={ButtonGroup}
+                                align={{ lg: 'end' }}
+                                title="Categories"
+                                id="dropdown-menu-align-responsive-1"
+                                >
+                                 {getStatus ? (
+                                    categoryArray.data.map((c) => (
+                                      <Dropdown.Item eventKey={c.id}>{c.name}</Dropdown.Item>
+                                    ))
+                                  ) : (
+                                    <Dropdown.Item disabled>No Categories</Dropdown.Item>
+                                  )}
+                              </DropdownButton>
                               <Button
                                 variant="primary"
                                 onClick={onCreateCategory}
