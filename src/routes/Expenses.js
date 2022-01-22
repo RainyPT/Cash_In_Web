@@ -21,12 +21,14 @@ import {
 import Expense from "../componentes/Expense";
 import Category from "../componentes/Category";
 export default function Expensespage() {
+  //Object Expense
+  const [expense, setExpense] = useState({ name: "", value: null, date: null });
+  //Object Categories
+  const [category, setCategory] = useState({ name: "", main_category: "" });
+
+  //UI Storage
   const [itemType, setItemType] = useState("Expenses");
   const [opType, setOpType] = useState(null);
-  const [expenseName, setExpenseName] = useState(null);
-  const [expenseValue, setExpenseValue] = useState(null);
-  const [expenseDate, setExpenseDate] = useState(null);
-  const [categoryName, setCategoryName] = useState(null);
   const [expenseArray, setExpenseArray] = useState([]);
   const [categoryArray, setCategoryArray] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -47,16 +49,12 @@ export default function Expensespage() {
     setOpType(type);
   };
   const onSaveExpense = async () => {
-    await saveExpense({
-      name: expenseName,
-      value: expenseValue,
-      date: expenseDate,
-    });
+    const result = await saveExpense(expense);
+    console.log(result);
   };
   const onCreateCategory = async () => {
-    await createCategory({
-      name: categoryName,
-    });
+    const result = await createCategory(category);
+    console.log(result);
   };
   const [selectedCat, setSelectedCat] = useState(null);
   return (
@@ -174,7 +172,7 @@ export default function Expensespage() {
                                   type="text"
                                   placeholder="Expense name"
                                   onChange={(e) =>
-                                    setExpenseName(e.target.value)
+                                    setExpense({ name: e.target.value })
                                   }
                                 />
                               </Form.Group>
@@ -184,7 +182,7 @@ export default function Expensespage() {
                                   type="number"
                                   placeholder="Expense value"
                                   onChange={(e) =>
-                                    setExpenseValue(e.target.value)
+                                    setExpense({ value: e.target.value })
                                   }
                                 />
                               </Form.Group>
@@ -194,7 +192,7 @@ export default function Expensespage() {
                                   type="date"
                                   placeholder="Expense date"
                                   onChange={(e) =>
-                                    setExpenseDate(e.target.value)
+                                    setExpense({ date: e.target.value })
                                   }
                                 />
                               </Form.Group>
@@ -299,7 +297,10 @@ export default function Expensespage() {
                                   type="text"
                                   placeholder="Category name"
                                   onChange={(e) =>
-                                    setCategoryName(e.target.value)
+                                    setCategory({
+                                      name: e.target.value,
+                                      main_category: e.target.value,
+                                    })
                                   }
                                 />
                               </Form.Group>
