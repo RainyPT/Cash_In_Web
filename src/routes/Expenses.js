@@ -22,7 +22,12 @@ import Expense from "../componentes/Expense";
 import Category from "../componentes/Category";
 export default function Expensespage() {
   //Object Expense
-  const [expense, setExpense] = useState({ name: "", value: null, date: null });
+  const [expense, setExpense] = useState({
+    name: "",
+    value: null,
+    date: null,
+    category: "",
+  });
   //Object Categories
   const [category, setCategory] = useState({ name: "", main_category: "" });
 
@@ -49,43 +54,14 @@ export default function Expensespage() {
     setOpType(type);
   };
   const onSaveExpense = async () => {
-    const result = await saveExpense(expense);
-    console.log(result);
+    console.log(expense);
+    await saveExpense(expense);
   };
   const onCreateCategory = async () => {
-    const result = await createCategory(category);
-    console.log(result);
+    await createCategory(category);
   };
-  const [selectedCat, setSelectedCat] = useState(null);
   return (
     <>
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Associate expense to a category</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <DropdownButton
-            alignRight
-            title="Dropdown right"
-            id="dropdown-menu-align-right"
-            onSelect={(e) => {
-              setSelectedCat(e);
-            }}
-          >
-            {getStatus ? (
-              categoryArray.data.map((c) => (
-                <Dropdown.Item eventKey={c.id}>{c.name}</Dropdown.Item>
-              ))
-            ) : (
-              <Dropdown.Item disabled>No Categories</Dropdown.Item>
-            )}
-          </DropdownButton>
-          {selectedCat !== null ? <p>You selected {selectedCat}</p> : <></>}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary">Save Changes</Button>
-        </Modal.Footer>
-      </Modal>
       <div className="Expensespage">
         <Container style={{ height: "100vh" }}>
           <Row>
@@ -172,7 +148,10 @@ export default function Expensespage() {
                                   type="text"
                                   placeholder="Expense name"
                                   onChange={(e) =>
-                                    setExpense({ name: e.target.value })
+                                    setExpense({
+                                      ...expense,
+                                      name: e.target.value,
+                                    })
                                   }
                                 />
                               </Form.Group>
@@ -182,7 +161,10 @@ export default function Expensespage() {
                                   type="number"
                                   placeholder="Expense value"
                                   onChange={(e) =>
-                                    setExpense({ value: e.target.value })
+                                    setExpense({
+                                      ...expense,
+                                      value: e.target.value,
+                                    })
                                   }
                                 />
                               </Form.Group>
@@ -192,23 +174,40 @@ export default function Expensespage() {
                                   type="date"
                                   placeholder="Expense date"
                                   onChange={(e) =>
-                                    setExpense({ date: e.target.value })
+                                    setExpense({
+                                      ...expense,
+                                      date: e.target.value,
+                                    })
                                   }
                                 />
                               </Form.Group>
                               <DropdownButton
                                 as={ButtonGroup}
-                                align={{ lg: 'end' }}
-                                title="Categories"
+                                align={{ lg: "end" }}
+                                title={
+                                  expense.category
+                                    ? expense.category
+                                    : "Categories"
+                                }
                                 id="dropdown-menu-align-responsive-1"
-                                >
+                                onSelect={(e) =>
+                                  setExpense({
+                                    ...expense,
+                                    category: e,
+                                  })
+                                }
+                              >
                                 {getStatus ? (
-                                    expenseArray.data.map((c) => (
-                                      <Dropdown.Item eventKey={c.id}>{c.name}</Dropdown.Item>
-                                    ))
-                                  ) : (
-                                    <Dropdown.Item disabled>No Categories</Dropdown.Item>
-                                  )}
+                                  categoryArray.data.map((c, id) => (
+                                    <Dropdown.Item eventKey={c.name} key={id}>
+                                      {c.name}
+                                    </Dropdown.Item>
+                                  ))
+                                ) : (
+                                  <Dropdown.Item disabled>
+                                    No Categories
+                                  </Dropdown.Item>
+                                )}
                               </DropdownButton>
                               <br></br>
                               <Button variant="primary" onClick={onSaveExpense}>
@@ -281,9 +280,13 @@ export default function Expensespage() {
                               }}
                             >
                               {getStatus ? (
-                                categoryArray.data.map((c) => (
-                                  <Category key={c.id} name={c.name} />
-                                ))
+                                categoryArray.data.length > 0 ? (
+                                  categoryArray.data.map((c) => (
+                                    <Category key={c.id} name={c.name} />
+                                  ))
+                                ) : (
+                                  <h1>Não existem categorias</h1>
+                                )
                               ) : (
                                 <></>
                               )}
@@ -314,24 +317,28 @@ export default function Expensespage() {
                                   onChange={(e) =>
                                     setCategory({
                                       name: e.target.value,
-                                      main_category: e.target.value,
+                                      main_category: 0,
                                     })
                                   }
                                 />
                               </Form.Group>
                               <DropdownButton
                                 as={ButtonGroup}
-                                align={{ lg: 'end' }}
+                                align={{ lg: "end" }}
                                 title="Categories"
                                 id="dropdown-menu-align-responsive-1"
-                                >
-                                 {getStatus ? (
-                                    categoryArray.data.map((c) => (
-                                      <Dropdown.Item eventKey={c.id}>{c.name}</Dropdown.Item>
-                                    ))
-                                  ) : (
-                                    <Dropdown.Item disabled>No Categories</Dropdown.Item>
-                                  )}
+                              >
+                                {getStatus ? (
+                                  categoryArray.data.map((c, id) => (
+                                    <Dropdown.Item key={id} eventKey={c.name}>
+                                      {c.name}
+                                    </Dropdown.Item>
+                                  ))
+                                ) : (
+                                  <Dropdown.Item disabled>
+                                    No Categories
+                                  </Dropdown.Item>
+                                )}
                               </DropdownButton>
                               <Button
                                 variant="primary"
