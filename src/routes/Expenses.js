@@ -21,19 +21,12 @@ import {
 import Expense from "../componentes/Expense";
 import Category from "../componentes/Category";
 export default function Expensespage() {
-  //Object Expense
-  const [expense, setExpense] = useState({
-    name: "",
-    value: null,
-    date: null,
-    category: "",
-  });
-  //Object Categories
-  const [category, setCategory] = useState({ name: "", main_category: "" });
-
-  //UI Storage
   const [itemType, setItemType] = useState("Expenses");
   const [opType, setOpType] = useState(null);
+  const [expenseName, setExpenseName] = useState(null);
+  const [expenseValue, setExpenseValue] = useState(null);
+  const [expenseDate, setExpenseDate] = useState(null);
+  const [categoryName, setCategoryName] = useState(null);
   const [expenseArray, setExpenseArray] = useState([]);
   const [categoryArray, setCategoryArray] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -54,14 +47,47 @@ export default function Expensespage() {
     setOpType(type);
   };
   const onSaveExpense = async () => {
-    console.log(expense);
-    await saveExpense(expense);
+    await saveExpense({
+      name: expenseName,
+      value: expenseValue,
+      date: expenseDate,
+    });
   };
   const onCreateCategory = async () => {
-    await createCategory(category);
+    await createCategory({
+      name: categoryName,
+    });
   };
+  const [selectedCat, setSelectedCat] = useState(null);
   return (
     <>
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Associate expense to a category</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <DropdownButton
+            alignRight
+            title="Dropdown right"
+            id="dropdown-menu-align-right"
+            onSelect={(e) => {
+              setSelectedCat(e);
+            }}
+          >
+            {getStatus ? (
+              categoryArray.data.map((c) => (
+                <Dropdown.Item eventKey={c.id}>{c.name}</Dropdown.Item>
+              ))
+            ) : (
+              <Dropdown.Item disabled>No Categories</Dropdown.Item>
+            )}
+          </DropdownButton>
+          {selectedCat !== null ? <p>You selected {selectedCat}</p> : <></>}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary">Save Changes</Button>
+        </Modal.Footer>
+      </Modal>
       <div className="Expensespage">
         <Container style={{ height: "100vh" }}>
           <Row>
@@ -69,15 +95,18 @@ export default function Expensespage() {
             <Col>
               <Container>
                 <Row>
-                  <Col></Col>
                   <Col xs={8}>
-                    <ButtonGroup aria-label="Basic example">
+                    <ButtonGroup
+                      aria-label="Basic example"
+                      style={{ width: "50vw" }}
+                    >
                       <Button
                         variant="secondary"
                         style={{
                           backgroundColor: "#f2b90c",
+                          padding: "20px",
                           borderColor: "#f2b90c",
-                          marginBottom: "5%",
+                          marginBottom: "2%",
                         }}
                         onClick={() => selectItemType("Expenses")}
                       >
@@ -87,8 +116,9 @@ export default function Expensespage() {
                         variant="secondary"
                         style={{
                           backgroundColor: "#f2b90c",
+                          padding: "20px",
                           borderColor: "#f2b90c",
-                          marginBottom: "5%",
+                          marginBottom: "2%",
                         }}
                         onClick={() => selectItemType("Categories")}
                       >
@@ -110,37 +140,35 @@ export default function Expensespage() {
                 <div className="containerExpenses">
                   <Container>
                     <Row>
-                      {" "}
-                      <Col></Col>
                       <Col>
                         <Container>
                           <Row>
-                            <Col></Col>
-                            <Col md={8}>
-                              <Button
-                                style={{
-                                  backgroundColor: "#f2b90c",
-                                  borderColor: "#f2b90c",
-                                }}
-                                onClick={() => selectOpType("add")}
-                              >
-                                ➕
-                              </Button>
-                            </Col>
-                            <Col></Col>
+                            <center>
+                              <Col md={8} style={{ paddingTop: "3vh" }}>
+                                <Button
+                                  style={{
+                                    backgroundColor: "#f2b90c",
+                                    borderColor: "#f2b90c",
+                                    width: "10vw",
+                                    height: "8vh",
+                                    fontSize: "20px",
+                                    fontWeight: "bolder",
+                                  }}
+                                  onClick={() => selectOpType("add")}
+                                >
+                                  Add
+                                </Button>
+                              </Col>
+                            </center>
                           </Row>
                         </Container>
                       </Col>
-                      <Col></Col>
                     </Row>
                     {opType === "add" && itemType === "Expenses" ? (
                       <>
                         <Row>
-                          <Col style={{ textAlign: "center" }}>Add Expense</Col>
-                        </Row>
-                        <Row>
                           <Col></Col>
-                          <Col md={8}>
+                          <Col md={8} style={{ paddingTop: "10vh" }}>
                             <Form>
                               <Form.Group className="mb-3">
                                 <Form.Label>Name</Form.Label>
@@ -148,10 +176,7 @@ export default function Expensespage() {
                                   type="text"
                                   placeholder="Expense name"
                                   onChange={(e) =>
-                                    setExpense({
-                                      ...expense,
-                                      name: e.target.value,
-                                    })
+                                    setExpenseName(e.target.value)
                                   }
                                 />
                               </Form.Group>
@@ -161,10 +186,7 @@ export default function Expensespage() {
                                   type="number"
                                   placeholder="Expense value"
                                   onChange={(e) =>
-                                    setExpense({
-                                      ...expense,
-                                      value: e.target.value,
-                                    })
+                                    setExpenseValue(e.target.value)
                                   }
                                 />
                               </Form.Group>
@@ -174,32 +196,23 @@ export default function Expensespage() {
                                   type="date"
                                   placeholder="Expense date"
                                   onChange={(e) =>
-                                    setExpense({
-                                      ...expense,
-                                      date: e.target.value,
-                                    })
+                                    setExpenseDate(e.target.value)
                                   }
                                 />
                               </Form.Group>
                               <DropdownButton
                                 as={ButtonGroup}
                                 align={{ lg: "end" }}
-                                title={
-                                  expense.category
-                                    ? expense.category
-                                    : "Categories"
-                                }
+                                title="Categories"
                                 id="dropdown-menu-align-responsive-1"
-                                onSelect={(e) =>
-                                  setExpense({
-                                    ...expense,
-                                    category: e,
-                                  })
-                                }
+                                variant="warning"
+                                style={{
+                                  marginBottom: "10vh",
+                                }}
                               >
                                 {getStatus ? (
-                                  categoryArray.data.map((c, id) => (
-                                    <Dropdown.Item eventKey={c.name} key={id}>
+                                  expenseArray.data.map((c) => (
+                                    <Dropdown.Item eventKey={c.id}>
                                       {c.name}
                                     </Dropdown.Item>
                                   ))
@@ -210,9 +223,18 @@ export default function Expensespage() {
                                 )}
                               </DropdownButton>
                               <br></br>
-                              <Button variant="primary" onClick={onSaveExpense}>
-                                Save Expense
-                              </Button>
+                              <center>
+                                <Button
+                                  variant="outline-warning"
+                                  style={{
+                                    boxShadow: "inset 0px 0px 4px #F2B90C",
+                                    padding: "15px",
+                                  }}
+                                  onClick={onSaveExpense}
+                                >
+                                  Save Expense
+                                </Button>
+                              </center>
                             </Form>
                           </Col>
                           <Col></Col>
@@ -223,11 +245,7 @@ export default function Expensespage() {
                     )}
                     {opType == null && itemType === "Expenses" ? (
                       <>
-                        <Row>
-                          <Col style={{ textAlign: "center" }}>
-                            Latest Expenses
-                          </Col>
-                        </Row>
+                        <Row></Row>
                         <Row>
                           <Col></Col>
                           <Col md={8}>
@@ -263,11 +281,7 @@ export default function Expensespage() {
                     )}
                     {opType == null && itemType === "Categories" ? (
                       <>
-                        <Row>
-                          <Col style={{ textAlign: "center" }}>
-                            Existing Categories
-                          </Col>
-                        </Row>
+                        <Row></Row>
                         <Row>
                           <Col></Col>
                           <Col md={8}>
@@ -280,13 +294,9 @@ export default function Expensespage() {
                               }}
                             >
                               {getStatus ? (
-                                categoryArray.data.length > 0 ? (
-                                  categoryArray.data.map((c) => (
-                                    <Category key={c.id} name={c.name} />
-                                  ))
-                                ) : (
-                                  <h1>Não existem categorias</h1>
-                                )
+                                categoryArray.data.map((c) => (
+                                  <Category key={c.id} name={c.name} />
+                                ))
                               ) : (
                                 <></>
                               )}
@@ -301,13 +311,8 @@ export default function Expensespage() {
                     {opType === "add" && itemType === "Categories" ? (
                       <>
                         <Row>
-                          <Col style={{ textAlign: "center" }}>
-                            Create Category
-                          </Col>
-                        </Row>
-                        <Row>
                           <Col></Col>
-                          <Col md={8}>
+                          <Col md={8} style={{ paddingTop: "10vh" }}>
                             <Form>
                               <Form.Group className="mb-3">
                                 <Form.Label>Name</Form.Label>
@@ -315,10 +320,7 @@ export default function Expensespage() {
                                   type="text"
                                   placeholder="Category name"
                                   onChange={(e) =>
-                                    setCategory({
-                                      name: e.target.value,
-                                      main_category: 0,
-                                    })
+                                    setCategoryName(e.target.value)
                                   }
                                 />
                               </Form.Group>
@@ -327,10 +329,14 @@ export default function Expensespage() {
                                 align={{ lg: "end" }}
                                 title="Categories"
                                 id="dropdown-menu-align-responsive-1"
+                                variant="warning"
+                                style={{
+                                  marginBottom: "10vh",
+                                }}
                               >
                                 {getStatus ? (
-                                  categoryArray.data.map((c, id) => (
-                                    <Dropdown.Item key={id} eventKey={c.name}>
+                                  categoryArray.data.map((c) => (
+                                    <Dropdown.Item eventKey={c.id}>
                                       {c.name}
                                     </Dropdown.Item>
                                   ))
@@ -340,12 +346,18 @@ export default function Expensespage() {
                                   </Dropdown.Item>
                                 )}
                               </DropdownButton>
-                              <Button
-                                variant="primary"
-                                onClick={onCreateCategory}
-                              >
-                                Create Category
-                              </Button>
+                              <center>
+                                <Button
+                                  variant="outline-warning"
+                                  style={{
+                                    boxShadow: "inset 0px 0px 4px #F2B90C",
+                                    padding: "15px",
+                                  }}
+                                  onClick={onCreateCategory}
+                                >
+                                  Create Category
+                                </Button>
+                              </center>
                             </Form>
                           </Col>
                           <Col></Col>

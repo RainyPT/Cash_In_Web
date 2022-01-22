@@ -3,6 +3,7 @@ import { Col, Container, Row, Button } from "react-bootstrap";
 import HEADER_LOGO from "./img/HEADER_LOGO.png";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { hover } from "@testing-library/user-event/dist/hover";
 function Header() {
   const navigate = useNavigate();
   const redirectToHome = () => {
@@ -26,11 +27,22 @@ function Header() {
               id="headerLogo"
             />
           </Col>
-          <Col>
+          <Col
+            style={{
+              paddingTop: "6vh",
+            }}
+          >
             {Cookies.get("userToken") ? (
               <>
-                <p>User ID: {localStorage.getItem("userID")}</p>
-                <Button href="#" onClick={logout}>
+                <Button
+                  href="#"
+                  style={{
+                    backgroundColor: "#F2B90C",
+                    borderColor: "#F2B90C",
+                    padding: "10px",
+                  }}
+                  onClick={logout}
+                >
                   Logout{" "}
                 </Button>
               </>
