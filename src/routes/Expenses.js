@@ -196,20 +196,20 @@ export default function Expensespage() {
                                   }
                                 />
                               </Form.Group>
-                              <DropdownButton
-                                as={ButtonGroup}
-                                align={{ lg: 'end' }}
-                                title="Categories"
-                                id="dropdown-menu-align-responsive-1"
-                                >
+                              
+                              <Form.Group as={Col} controlId="formGridState">
+                                <Form.Label>Expenses</Form.Label>
+                                <Form.Select defaultValue="Choose category">
                                 {getStatus ? (
-                                    expenseArray.data.map((c) => (
-                                      <Dropdown.Item eventKey={c.id}>{c.name}</Dropdown.Item>
+                                    categoryArray.data.map((c) => (
+                                    <option eventKey={c.id}>{c.name}</option>
                                     ))
                                   ) : (
-                                    <Dropdown.Item disabled>No Categories</Dropdown.Item>
+                                    <option disabled>No Expenses</option>
                                   )}
-                              </DropdownButton>
+                                </Form.Select>
+                              </Form.Group>
+                              
                               <br></br>
                               <Button variant="primary" onClick={onSaveExpense}>
                                 Save Expense
@@ -319,20 +319,19 @@ export default function Expensespage() {
                                   }
                                 />
                               </Form.Group>
-                              <DropdownButton
-                                as={ButtonGroup}
-                                align={{ lg: 'end' }}
-                                title="Categories"
-                                id="dropdown-menu-align-responsive-1"
-                                >
-                                 {getStatus ? (
+                              <Form.Group as={Col} controlId="formGridState">
+                                <Form.Label>Category</Form.Label>
+                                <Form.Select defaultValue="Choose category">
+                                {getStatus ? (
                                     categoryArray.data.map((c) => (
-                                      <Dropdown.Item eventKey={c.id}>{c.name}</Dropdown.Item>
+                                    <option eventKey={c.id}>{c.name}</option>
                                     ))
                                   ) : (
-                                    <Dropdown.Item disabled>No Categories</Dropdown.Item>
+                                    <option disabled>No Categories</option>
                                   )}
-                              </DropdownButton>
+                                </Form.Select>
+                              </Form.Group>
+                              <br></br>
                               <Button
                                 variant="primary"
                                 onClick={onCreateCategory}
