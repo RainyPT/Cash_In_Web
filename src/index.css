@@ -69,18 +69,30 @@
 }
 
 /*Expensespage START*/
+.addBtn{
 
-#doubleButton2 {
-  border-radius: 24px;
-  border-top-left-radius: 0px;
-  border-bottom-left-radius: 0px;
-  background-color: #ffffff;
-  color: #f2b90c;
+  border-radius: 50%;
+  height: 150px;
+  width: 150px;
+  margin-top: 20vh;
+  font-size: 30px;
+  font-weight: bolder;
+  text-align: center;
+  background-color: #f2b90c;
+  border-color: #f2b90c;
+  border-style: solid;
+  box-shadow: rgba(0, 0, 0, .2) 0 3px 5px -1px,rgba(0, 0, 0, .14) 0 6px 10px 0,rgba(0, 0, 0, .12) 0 1px 18px 0;
+  color: #ffffff;
+  
 }
 
-#doubleButton2:hover {
-  background: #f2b90c;
-  color: #ffffff;
+.addBtn:hover {
+  background: transparent;
+  border-color: #f2b90c;
+  border: 5px solid;
+  box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.432);
+  transition: 0.5s;
+  color: #f2b90c;
 }
 
 .containerExpenses {
@@ -141,14 +153,6 @@
   margin-top: 100px;
 }
 
-#buttonAddNews {
-  border-radius: 50%;
-  font-weight: bold;
-  font-size: 120px;
-  height: 150px;
-  width: 150px;
-  margin-top: 20px;
-}
 
 #containerGraph {
   height: 20rem;

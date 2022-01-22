@@ -20,74 +20,11 @@ import {
 } from "../ReqLib";
 import Expense from "../componentes/Expense";
 import Category from "../componentes/Category";
+import { useNavigate } from "react-router-dom";
 
-/*
-import {
-  Card,
-  Col,
-  Container,
-  Row,
-  Button,
-  ButtonGroup,
-  ListGroup,
-  Form,
-  Modal,
-  Dropdown,
-  DropdownButton,
-} from "react-bootstrap";
-import { useEffect, useState } from "react";
-import {
-  getUserExpenses,
-  getUserCategories,
-  saveExpense,
-  createCategory,
-} from "../ReqLib";
-import Expense from "../componentes/Expense";
-import Category from "../componentes/Category";
-export default function Expensespage() {
-  const [itemType, setItemType] = useState("Expenses");
-  const [opType, setOpType] = useState(null);
-  const [expenseName, setExpenseName] = useState(null);
-  const [expenseValue, setExpenseValue] = useState(null);
-  const [expenseDate, setExpenseDate] = useState(null);
-  const [categoryName, setCategoryName] = useState(null);
-  const [expenseArray, setExpenseArray] = useState([]);
-  const [categoryArray, setCategoryArray] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [getStatus, setGetStatus] = useState(false);
-  useEffect(() => {
-    async function expenseGetting() {
-      setCategoryArray(await getUserCategories());
-      setExpenseArray(await getUserExpenses());
-      setGetStatus(true);
-    }
-    expenseGetting();
-  }, []);
-  const selectItemType = (type) => {
-    setItemType(type);
-    setOpType(null);
-  };
-  const selectOpType = (type) => {
-    setOpType(type);
-  };
-  const onSaveExpense = async () => {
-    await saveExpense({
-      name: expenseName,
-      value: expenseValue,
-      date: expenseDate,
-    });
-  };
-  const onCreateCategory = async () => {
-    await createCategory({
-      name: categoryName,
-    });
-  };
-  const [selectedCat, setSelectedCat] = useState(null);
-  
-}
-*/
 export default function Expensespage() {
   //Object Expense
+  const navigate = useNavigate();
   const [expense, setExpense] = useState({
     name: "",
     value: null,
@@ -131,7 +68,20 @@ export default function Expensespage() {
       <div className="Expensespage">
         <Container style={{ height: "100vh" }}>
           <Row>
-            <Col></Col>
+            <Col>
+            <Button
+                  variant="primary"
+                  style={{
+                    backgroundColor: "#f2b90c",
+                    padding: "20px",
+                    borderColor: "#f2b90c",
+                    marginBottom: "2%",
+                  }}
+                  onClick={() => navigate("/graphs")}
+                  >
+                  Go Back
+            </Button>
+            </Col>
             <Col>
               <Container>
                 <Row>
@@ -260,7 +210,7 @@ export default function Expensespage() {
                                 }}
                               >
                                 {getStatus ? (
-                                  expenseArray.data.map((c) => (
+                                  categoryArray.data.map((c) => (
                                     <Dropdown.Item eventKey={c.id}>
                                       {c.name}
                                     </Dropdown.Item>

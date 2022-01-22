@@ -22,7 +22,7 @@ export default function Login() {
     }
     Cookies.set("userToken", res.data.token, { expires: 60 * 60 * 24 });
     localStorage.setItem("userID", res.data.user.id);
-    navigate("/expenses");
+    navigate("/graphs");
   };
   return (
     <div className="LoginComp">
