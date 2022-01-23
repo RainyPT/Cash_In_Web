@@ -9,7 +9,7 @@ import {
   Badge,
   Form,
 } from "react-bootstrap";
-import { getExpensesByDate } from "../ReqLib";
+import { getExpensesByDate, getUserCategories } from "../ReqLib";
 import {
   LineChart,
   Line,
@@ -18,6 +18,7 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  ResponsiveContainer,
 } from "recharts";
 
 import { useNavigate } from "react-router-dom";
@@ -45,7 +46,10 @@ const CustomTooltip = ({ active, payload }) => {
 export default function Graphspage() {
   const navigate = useNavigate();
   const [expenseArray, setExpenseArray] = useState(null);
-  const [loadedObj, setLoadedObj] = useState({ initial_load: false });
+  const [categoryArray, setCategoryArray] = useState(null);
+  const [expensesByCategoryArray, setExpensesByCategoryArray] = useState(null);
+  const [loadedExpenses, setLoadedExpenses] = useState(false);
+  const [loadedCategories, setLoadedCategories] = useState(false);
   const [changeDates, setChangeDates] = useState({
     min: null,
     max: null,
@@ -58,16 +62,27 @@ export default function Graphspage() {
         if (res.data.length === 0) {
           alert("No Expenses!");
         }
-        setLoadedObj({ ...loadedObj, initial_load: true });
+        setLoadedExpenses(true);
       }
     }
   }
+  async function getAllCategories() {
+    const res = await getUserCategories();
+    if (res.status === 200) {
+      setCategoryArray(res.data);
+      if (res.data.length === 0) {
+        alert("Please add categories!");
+      }
+      setLoadedCategories(true);
+    }
+  }
   useEffect(() => {
+    getAllCategories();
     getExpenses_By_Date("10-12-1997", "30-1-2023");
   }, []);
   return (
     <div className="Graphspage">
-      <Container style={{ height: "100vh" }}>
+      <Container>
         <Row>
           <Col md={3}>
             <div className="containerGraphs">
@@ -79,18 +94,18 @@ export default function Graphspage() {
                 as="ol"
                 numbered
                 style={{
-                  height: "100vh",
+                  height: "65vh",
                   marginTop: "2vh",
                   overflow: "scroll",
                   WebkitOverflowScrolling: "touch",
                   overflowX: "hidden",
                 }}
               >
-                {loadedObj.initial_load ? (
+                {loadedExpenses ? (
                   expenseArray.map((c, id) => (
                     <ListGroup.Item
                       className="d-flex justify-content-between align-items-start"
-                      eventKey={id}
+                      key={id}
                     >
                       <div className="ms-2 me-auto">
                         <div className="fw-bold">{c.name}</div>
@@ -106,7 +121,7 @@ export default function Graphspage() {
                     disabled
                   >
                     <div className="ms-2 me-auto">
-                      <div className="fw-bold">no expense</div>
+                      <div className="fw-bold">No Expenses</div>
                     </div>
                     <Badge variant="primary" pill>
                       no value
@@ -173,7 +188,7 @@ export default function Graphspage() {
               </Container>
 
               <div className="Graph">
-                {loadedObj.initial_load ? (
+                {loadedExpenses ? (
                   <LineChart
                     width={500}
                     height={300}
@@ -219,11 +234,80 @@ export default function Graphspage() {
             </center>
           </Col>
         </Row>
-      </Container>
-
-      <Container>
         <Row>
-          <div className="containerExpenses" id="containerGraph"></div>
+          <Col>
+            <div className="containerExpenses">
+              <Container>
+                <Row>
+                  <Col style={{ textAlign: "center" }}>
+                    <h3>Start Date</h3>
+                    <Form.Group controlId="duedate">
+                      <Form.Control
+                        type="date"
+                        name="beginDate"
+                        placeholder="Begin Date"
+                        max={changeDates.max}
+                        onChange={(e) => {
+                          setChangeDates({
+                            ...changeDates,
+                            min: e.target.value,
+                          });
+                        }}
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col style={{ textAlign: "center" }}>
+                    <h3>End Date</h3>
+                    <Form.Group controlId="duedate">
+                      <Form.Control
+                        type="date"
+                        name="beginDate"
+                        min={changeDates.min}
+                        placeholder="End Date"
+                        onChange={(e) => {
+                          setChangeDates({
+                            ...changeDates,
+                            max: e.target.value,
+                          });
+                        }}
+                      />
+                    </Form.Group>
+                  </Col>
+                  <div className="Graph">
+                    {loadedExpenses ? (
+                      <LineChart
+                        width={1000}
+                        height={500}
+                        data={expenseArray}
+                        margin={{
+                          top: 5,
+                          right: 30,
+                          left: 20,
+                          bottom: 5,
+                        }}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="date" />
+                        <YAxis yAxisId="left" />
+                        <YAxis yAxisId="right" orientation="right" />
+                        <Tooltip content={<CustomTooltip />} />
+                        <Legend />
+                        <Line
+                          yAxisId="left"
+                          type="monotone"
+                          dataKey="value"
+                          stroke="#8884d8"
+                          activeDot={{ r: 8 }}
+                        />
+                      </LineChart>
+                    ) : (
+                      <></>
+                    )}
+                  </div>
+                </Row>
+              </Container>
+            </div>
+          </Col>
         </Row>
       </Container>
     </div>
