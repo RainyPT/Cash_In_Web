@@ -67,7 +67,7 @@ export default function Graphspage() {
   }, []);
   return (
     <div className="Graphspage">
-      <Container style={{ height: "100vh" }}>
+      <Container style={{ height: "75vh" }}>
         <Row>
           <Col md={3}>
             <div className="containerGraphs">
@@ -81,7 +81,7 @@ export default function Graphspage() {
                 style={{
                   height: "100vh",
                   marginTop: "2vh",
-                  overflow: "scroll",
+                  cursor: "pointer",
                   WebkitOverflowScrolling: "touch",
                   overflowX: "hidden",
                 }}
@@ -95,7 +95,7 @@ export default function Graphspage() {
                       <div className="ms-2 me-auto">
                         <div className="fw-bold">{c.name}</div>
                       </div>
-                      <Badge variant="primary" pill>
+                      <Badge bg="warning" pill>
                         {c.value}
                       </Badge>
                     </ListGroup.Item>
@@ -118,19 +118,17 @@ export default function Graphspage() {
           </Col>
           <Col md={{ span: 6, offset: 0.5 }}>
             <div className="containerGraphs">
-              <center>
-                <p className="miniTitles">Anual Expenses</p>
-              </center>
               <Container>
                 <Row>
-                  <Col style={{ textAlign: "center" }}>
-                    <h3>Start Date</h3>
+                  <Col style={{marginTop:"3vh"}}>
+                    <h3 style={{fontSize:"14px"}}>Start Date</h3>
                     <Form.Group controlId="duedate">
                       <Form.Control
                         type="date"
                         name="beginDate"
                         placeholder="Begin Date"
                         max={changeDates.max}
+                        style={{maxWidth:"14vw"}}
                         onChange={(e) => {
                           setChangeDates({
                             ...changeDates,
@@ -140,13 +138,14 @@ export default function Graphspage() {
                       />
                     </Form.Group>
                   </Col>
-                  <Col style={{ textAlign: "center" }}>
-                    <h3>End Date</h3>
+                  <Col style={{marginTop:"3vh"}}>
+                    <h3 style={{fontSize:"14px"}}>End Date</h3>
                     <Form.Group controlId="duedate">
                       <Form.Control
                         type="date"
                         name="beginDate"
                         min={changeDates.min}
+                        style={{maxWidth:"14vw"}}
                         placeholder="End Date"
                         onChange={(e) => {
                           setChangeDates({
@@ -159,23 +158,13 @@ export default function Graphspage() {
                   </Col>
                 </Row>
                 <Row>
-                  <Col>
-                    <Button
-                      style={{ width: "100%" }}
-                      onClick={() => {
-                        getExpenses_By_Date(changeDates.min, changeDates.max);
-                      }}
-                    >
-                      Get
-                    </Button>
-                  </Col>
                 </Row>
               </Container>
-
-              <div className="Graph">
+              <center>
+              <div className="Graph" style={{marginTop:"5vh"}}>
                 {loadedObj.initial_load ? (
                   <LineChart
-                    width={500}
+                    width={600}
                     height={300}
                     data={expenseArray}
                     margin={{
@@ -203,6 +192,18 @@ export default function Graphspage() {
                   <></>
                 )}
               </div>
+              <Col>
+                  <Button
+                    style={{ width: "25%", marginTop:"7vh"}}
+                    variant="warning"
+                    onClick={() => {
+                    getExpenses_By_Date(changeDates.min, changeDates.max);
+                  }}
+                  >
+                      Get Graph
+                    </Button>
+                  </Col>
+              </center>
             </div>
           </Col>
 
@@ -222,7 +223,7 @@ export default function Graphspage() {
       </Container>
 
       <Container>
-        <Row>
+        <Row style={{marginTop:"10vh"}}>
           <div className="containerExpenses" id="containerGraph"></div>
         </Row>
       </Container>
