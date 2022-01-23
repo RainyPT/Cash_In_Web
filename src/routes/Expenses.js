@@ -202,7 +202,7 @@ export default function Expensespage() {
                                 <Form.Select defaultValue="Choose category">
                                 {getStatus ? (
                                     categoryArray.data.map((c) => (
-                                    <option eventKey={c.id}>{c.name}</option>
+                                    <option placeholder="Categories ..." eventKey={c.id} >{c.name}</option>
                                     ))
                                   ) : (
                                     <option disabled>No Expenses</option>
@@ -324,7 +324,7 @@ export default function Expensespage() {
                                 <Form.Select defaultValue="Choose category">
                                 {getStatus ? (
                                     categoryArray.data.map((c) => (
-                                    <option eventKey={c.id}>{c.name}</option>
+                                    <option placeholder="Categories ..." eventKey={c.id}>{c.name}</option>
                                     ))
                                   ) : (
                                     <option disabled>No Categories</option>
