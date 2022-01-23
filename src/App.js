@@ -8,7 +8,7 @@ import Register from "./routes/Register";
 import Expensespage from "./routes/Expenses";
 import Graphspage from "./routes/Graphs";
 import Cookies from "js-cookie";
-
+import AccountSettings from "./routes/AccountSettings";
 export default function App() {
   function RequireAuth({ children }) {
     return Cookies.get("userToken") ? (
@@ -66,6 +66,14 @@ export default function App() {
           element={
             <RequireAuth>
               <Graphspage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="accountsettings"
+          element={
+            <RequireAuth>
+              <AccountSettings />
             </RequireAuth>
           }
         />
