@@ -7,7 +7,7 @@ import { hover } from "@testing-library/user-event/dist/hover";
 function Header() {
   const navigate = useNavigate();
   const redirectToHome = () => {
-    return Cookies.get("userToken") ? navigate("/expenses") : navigate("/");
+    return Cookies.get("userToken") ? navigate("/graphs") : navigate("/");
   };
   const logout = () => {
     Cookies.remove("userToken");
@@ -42,6 +42,7 @@ function Header() {
                   style={{
                     backgroundColor: "#F2B90C",
                     borderColor: "#F2B90C",
+                    marginRight:"1vw",
                     padding: "10px",
                   }}
                   onClick={accountSettings}

@@ -95,6 +95,12 @@
   color: #ffffff;
 }
 
+#sliderBtn:hover{
+  background: #dba502;
+  box-shadow: inset 0px 0px 10px #ffe9a6;
+  transition: 0.5s;
+}
+
 .addBtn:hover {
   background: transparent;
   border-color: #f2b90c;
