@@ -20,9 +20,17 @@ import {
 } from "../ReqLib";
 import Expense from "../componentes/Expense";
 import Category from "../componentes/Category";
+import { useNavigate } from "react-router-dom";
+
 export default function Expensespage() {
   //Object Expense
-  const [expense, setExpense] = useState({ name: "", value: null, date: null });
+  const navigate = useNavigate();
+  const [expense, setExpense] = useState({
+    name: "",
+    value: null,
+    date: null,
+    category: "",
+  });
   //Object Categories
   const [category, setCategory] = useState({ name: "", main_category: "" });
 
@@ -49,59 +57,46 @@ export default function Expensespage() {
     setOpType(type);
   };
   const onSaveExpense = async () => {
-    const result = await saveExpense(expense);
-    console.log(result);
+    console.log(expense);
+    await saveExpense(expense);
   };
   const onCreateCategory = async () => {
-    const result = await createCategory(category);
-    console.log(result);
+    await createCategory(category);
   };
-  const [selectedCat, setSelectedCat] = useState(null);
   return (
     <>
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Associate expense to a category</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <DropdownButton
-            alignRight
-            title="Dropdown right"
-            id="dropdown-menu-align-right"
-            onSelect={(e) => {
-              setSelectedCat(e);
-            }}
-          >
-            {getStatus ? (
-              categoryArray.data.map((c) => (
-                <Dropdown.Item eventKey={c.id}>{c.name}</Dropdown.Item>
-              ))
-            ) : (
-              <Dropdown.Item disabled>No Categories</Dropdown.Item>
-            )}
-          </DropdownButton>
-          {selectedCat !== null ? <p>You selected {selectedCat}</p> : <></>}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary">Save Changes</Button>
-        </Modal.Footer>
-      </Modal>
       <div className="Expensespage">
         <Container style={{ height: "100vh" }}>
           <Row>
-            <Col></Col>
+            <Col>
+            <Button
+                  variant="primary"
+                  style={{
+                    backgroundColor: "#f2b90c",
+                    padding: "20px",
+                    borderColor: "#f2b90c",
+                    marginBottom: "2%",
+                  }}
+                  onClick={() => navigate("/graphs")}
+                  >
+                  Go Back
+            </Button>
+            </Col>
             <Col>
               <Container>
                 <Row>
-                  <Col></Col>
                   <Col xs={8}>
-                    <ButtonGroup aria-label="Basic example">
+                    <ButtonGroup
+                      aria-label="Basic example"
+                      style={{ width: "50vw" }}
+                    >
                       <Button
                         variant="secondary"
                         style={{
                           backgroundColor: "#f2b90c",
+                          padding: "20px",
                           borderColor: "#f2b90c",
-                          marginBottom: "5%",
+                          marginBottom: "2%",
                         }}
                         onClick={() => selectItemType("Expenses")}
                       >
@@ -111,8 +106,9 @@ export default function Expensespage() {
                         variant="secondary"
                         style={{
                           backgroundColor: "#f2b90c",
+                          padding: "20px",
                           borderColor: "#f2b90c",
-                          marginBottom: "5%",
+                          marginBottom: "2%",
                         }}
                         onClick={() => selectItemType("Categories")}
                       >
@@ -134,37 +130,35 @@ export default function Expensespage() {
                 <div className="containerExpenses">
                   <Container>
                     <Row>
-                      {" "}
-                      <Col></Col>
                       <Col>
                         <Container>
                           <Row>
-                            <Col></Col>
-                            <Col md={8}>
-                              <Button
-                                style={{
-                                  backgroundColor: "#f2b90c",
-                                  borderColor: "#f2b90c",
-                                }}
-                                onClick={() => selectOpType("add")}
-                              >
-                                ➕
-                              </Button>
-                            </Col>
-                            <Col></Col>
+                            <center>
+                              <Col md={8} style={{ paddingTop: "3vh" }}>
+                                <Button
+                                  style={{
+                                    backgroundColor: "#f2b90c",
+                                    borderColor: "#f2b90c",
+                                    width: "10vw",
+                                    height: "8vh",
+                                    fontSize: "20px",
+                                    fontWeight: "bolder",
+                                  }}
+                                  onClick={() => selectOpType("add")}
+                                >
+                                  Add
+                                </Button>
+                              </Col>
+                            </center>
                           </Row>
                         </Container>
                       </Col>
-                      <Col></Col>
                     </Row>
                     {opType === "add" && itemType === "Expenses" ? (
                       <>
                         <Row>
-                          <Col style={{ textAlign: "center" }}>Add Expense</Col>
-                        </Row>
-                        <Row>
                           <Col></Col>
-                          <Col md={8}>
+                          <Col md={8} style={{ paddingTop: "10vh" }}>
                             <Form>
                               <Form.Group className="mb-3">
                                 <Form.Label>Name</Form.Label>
@@ -172,7 +166,10 @@ export default function Expensespage() {
                                   type="text"
                                   placeholder="Expense name"
                                   onChange={(e) =>
-                                    setExpense({ name: e.target.value })
+                                    setExpense({
+                                      ...expense,
+                                      name: e.target.value,
+                                    })
                                   }
                                 />
                               </Form.Group>
@@ -182,7 +179,10 @@ export default function Expensespage() {
                                   type="number"
                                   placeholder="Expense value"
                                   onChange={(e) =>
-                                    setExpense({ value: e.target.value })
+                                    setExpense({
+                                      ...expense,
+                                      value: e.target.value,
+                                    })
                                   }
                                 />
                               </Form.Group>
@@ -192,28 +192,48 @@ export default function Expensespage() {
                                   type="date"
                                   placeholder="Expense date"
                                   onChange={(e) =>
-                                    setExpense({ date: e.target.value })
+                                    setExpense({
+                                      ...expense,
+                                      date: e.target.value,
+                                    })
                                   }
                                 />
                               </Form.Group>
-                              
-                              <Form.Group as={Col} controlId="formGridState">
-                                <Form.Label>Expenses</Form.Label>
-                                <Form.Select defaultValue="Choose category">
+                              <DropdownButton
+                                as={ButtonGroup}
+                                align={{ lg: "end" }}
+                                title="Categories"
+                                id="dropdown-menu-align-responsive-1"
+                                variant="warning"
+                                style={{
+                                  marginBottom: "10vh",
+                                }}
+                              >
                                 {getStatus ? (
-                                    categoryArray.data.map((c) => (
-                                    <option placeholder="Categories ..." eventKey={c.id} >{c.name}</option>
-                                    ))
-                                  ) : (
-                                    <option disabled>No Expenses</option>
-                                  )}
-                                </Form.Select>
-                              </Form.Group>
-                              
+                                  categoryArray.data.map((c) => (
+                                    <Dropdown.Item eventKey={c.id}>
+                                      {c.name}
+                                    </Dropdown.Item>
+                                  ))
+                                ) : (
+                                  <Dropdown.Item disabled>
+                                    No Categories
+                                  </Dropdown.Item>
+                                )}
+                              </DropdownButton>
                               <br></br>
-                              <Button variant="primary" onClick={onSaveExpense}>
-                                Save Expense
-                              </Button>
+                              <center>
+                                <Button
+                                  variant="outline-warning"
+                                  style={{
+                                    boxShadow: "inset 0px 0px 4px #F2B90C",
+                                    padding: "15px",
+                                  }}
+                                  onClick={onSaveExpense}
+                                >
+                                  Save Expense
+                                </Button>
+                              </center>
                             </Form>
                           </Col>
                           <Col></Col>
@@ -224,11 +244,7 @@ export default function Expensespage() {
                     )}
                     {opType == null && itemType === "Expenses" ? (
                       <>
-                        <Row>
-                          <Col style={{ textAlign: "center" }}>
-                            Latest Expenses
-                          </Col>
-                        </Row>
+                        <Row></Row>
                         <Row>
                           <Col></Col>
                           <Col md={8}>
@@ -264,11 +280,7 @@ export default function Expensespage() {
                     )}
                     {opType == null && itemType === "Categories" ? (
                       <>
-                        <Row>
-                          <Col style={{ textAlign: "center" }}>
-                            Existing Categories
-                          </Col>
-                        </Row>
+                        <Row></Row>
                         <Row>
                           <Col></Col>
                           <Col md={8}>
@@ -298,13 +310,8 @@ export default function Expensespage() {
                     {opType === "add" && itemType === "Categories" ? (
                       <>
                         <Row>
-                          <Col style={{ textAlign: "center" }}>
-                            Create Category
-                          </Col>
-                        </Row>
-                        <Row>
                           <Col></Col>
-                          <Col md={8}>
+                          <Col md={8} style={{ paddingTop: "10vh" }}>
                             <Form>
                               <Form.Group className="mb-3">
                                 <Form.Label>Name</Form.Label>
@@ -314,30 +321,45 @@ export default function Expensespage() {
                                   onChange={(e) =>
                                     setCategory({
                                       name: e.target.value,
-                                      main_category: e.target.value,
+                                      main_category: 0,
                                     })
                                   }
                                 />
                               </Form.Group>
-                              <Form.Group as={Col} controlId="formGridState">
-                                <Form.Label>Category</Form.Label>
-                                <Form.Select defaultValue="Choose category">
-                                {getStatus ? (
-                                    categoryArray.data.map((c) => (
-                                    <option placeholder="Categories ..." eventKey={c.id}>{c.name}</option>
-                                    ))
-                                  ) : (
-                                    <option disabled>No Categories</option>
-                                  )}
-                                </Form.Select>
-                              </Form.Group>
-                              <br></br>
-                              <Button
-                                variant="primary"
-                                onClick={onCreateCategory}
+                              <DropdownButton
+                                as={ButtonGroup}
+                                align={{ lg: "end" }}
+                                title="Categories"
+                                id="dropdown-menu-align-responsive-1"
+                                variant="warning"
+                                style={{
+                                  marginBottom: "10vh",
+                                }}
                               >
-                                Create Category
-                              </Button>
+                                {getStatus ? (
+                                  categoryArray.data.map((c) => (
+                                    <Dropdown.Item eventKey={c.id}>
+                                      {c.name}
+                                    </Dropdown.Item>
+                                  ))
+                                ) : (
+                                  <Dropdown.Item disabled>
+                                    No Categories
+                                  </Dropdown.Item>
+                                )}
+                              </DropdownButton>
+                              <center>
+                                <Button
+                                  variant="outline-warning"
+                                  style={{
+                                    boxShadow: "inset 0px 0px 4px #F2B90C",
+                                    padding: "15px",
+                                  }}
+                                  onClick={onCreateCategory}
+                                >
+                                  Create Category
+                                </Button>
+                              </center>
                             </Form>
                           </Col>
                           <Col></Col>

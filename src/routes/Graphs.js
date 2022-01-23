@@ -15,7 +15,7 @@ import {
   Tooltip,
   Legend
 } from "recharts";
-
+import { useNavigate } from "react-router-dom";
 const data = [
   {
     name: "Page A",
@@ -68,6 +68,7 @@ const data = [
   }
 ];
 export default function Graphspage() {
+  const navigate = useNavigate();
   return (
     <div className="Graphspage">
       <Container style={{ height: "100vh" }}>
@@ -118,19 +119,15 @@ export default function Graphspage() {
 
           <Col>
             <center>
-              <p className="textAddNews">Add News</p>
-              <button className="doubleButton" id="buttonAddNews">
-                +
+              <button className="addBtn" onClick={()=>{navigate("/expenses")}}>
+                Add
               </button>
             </center>
           </Col>
         </Row>
       </Container>
-
       <Container>
-        <Row>
           <div className="containerExpenses" id="containerGraph"></div>
-        </Row>
       </Container>
     </div>
   );
