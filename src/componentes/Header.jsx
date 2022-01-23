@@ -14,6 +14,9 @@ function Header() {
     localStorage.removeItem("userID");
     navigate("/");
   };
+  const accountSettings = () => {
+    navigate("/accountsettings");
+  };
   return (
     <div className="Header">
       <Container>
@@ -34,6 +37,17 @@ function Header() {
           >
             {Cookies.get("userToken") ? (
               <>
+                <Button
+                  href="#"
+                  style={{
+                    backgroundColor: "#F2B90C",
+                    borderColor: "#F2B90C",
+                    padding: "10px",
+                  }}
+                  onClick={accountSettings}
+                >
+                  Account Settings{" "}
+                </Button>
                 <Button
                   href="#"
                   style={{

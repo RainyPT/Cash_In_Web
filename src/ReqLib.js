@@ -182,3 +182,13 @@ export const getAuthedUser = async () => {
     return err;
   }
 };
+export const changeUserPassword = async (reqobj) => {
+  try {
+    const res = await axios.post("api/change-password", reqobj, {
+      headers: ProtectedHeaders(),
+    });
+    return res;
+  } catch (err) {
+    return err;
+  }
+};
