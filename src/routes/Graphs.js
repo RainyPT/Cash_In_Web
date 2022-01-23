@@ -61,8 +61,11 @@ export default function Graphspage() {
           </Col>
         </Row>
       </Container>
+
       <Container>
+        <Row>
           <div className="containerExpenses" id="containerGraph"></div>
+        </Row>
       </Container>
     </div>
   );

@@ -85,6 +85,62 @@ export const saveExpense = async (reqOBJ) => {
     return err;
   }
 };
+export const searchExpense = async (name) => {
+  try {
+    const res = await axios.get("api/expenses/search/" + name, {
+      headers: ProtectedHeaders(),
+    });
+    return res;
+  } catch (err) {
+    return err;
+  }
+};
+
+export const editExpense = async (id, reqOBJ) => {
+  try {
+    const res = await axios.put("api/expenses/" + id, reqOBJ,{
+      headers: ProtectedHeaders(),
+    });
+    return res;
+  } catch (err) {
+    return err;
+  }
+};
+
+export const editCategory = async (id,reqOBJ) => {
+  try {
+    const res = await axios.put("api/categories/" + id, reqOBJ,{
+      headers: ProtectedHeaders(),
+    });
+    return res;
+  } catch (err) {
+    return err;
+  }
+};
+
+export const deleteCategory = async (id) => {
+  try {
+    const res = await axios.delete("api/categories/" + id, {
+      headers: ProtectedHeaders(),
+    });
+    return res;
+  } catch (err) {
+    return err;
+  }
+};
+
+export const deleteExpense = async (id) => {
+  try {
+    const res = await axios.delete("api/expenses/" + id, {
+      headers: ProtectedHeaders(),
+    });
+    return res;
+  } catch (err) {
+    return err;
+  }
+};
+
+
 export const createCategory = async (reqOBJ) => {
   try {
     const res = await axios.post("api/categories", reqOBJ, {
