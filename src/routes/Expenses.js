@@ -63,8 +63,15 @@ export default function Expensespage() {
     setOpType(type);
   };
   const onSaveExpense = async () => {
-    console.log(expense);
-    await saveExpense(expense);
+
+    const res = await saveExpense(expense);
+    if(res.status===200){
+
+      alert("Expense Saved Successfully");
+      setOpType(null);
+
+    }else{alert("Something Went Wrong")}
+
   };
 
   const onEditCategory = async (id,reqOBJ) => {
@@ -76,6 +83,7 @@ export default function Expensespage() {
       setOpType(null);
 
     }else{alert("Something Went Wrong")}
+
   };
 
   const onDeleteCategory = async (id) => {
@@ -87,11 +95,19 @@ export default function Expensespage() {
       setOpType(null);
 
     }else{alert("Something Went Wrong")}
+
   }
 
   const onEditExpense = async (id,reqOBJ) => {
-    await editExpense(id,reqOBJ);
-    console.log(await editExpense(id,reqOBJ));
+
+    const res= await editExpense(id,reqOBJ);
+    if(res.status===200){
+
+      alert("Category Edited Successfully");
+      setOpType(null);
+
+    }else{alert("Something Went Wrong")}
+
   };
 
   const onDeleteExpense = async (id) => {
@@ -109,8 +125,28 @@ export default function Expensespage() {
     setSearchExpenseStatus(true);
   };
   const onCreateCategory = async () => {
-    await createCategory(category);
+    const res = await createCategory(category);
+    console.log(await createCategory(category));
+
+    if(res.ack===0){
+
+      alert("Category Edited Successfully");
+      setOpType(null);
+
+    }else{alert("Something Went Wrong")}
   };
+
+  const findCategory = (ArrayOBJ,id) =>{
+    const found = ArrayOBJ.filter( (ArrayOBJ) => {
+
+      if(ArrayOBJ.id == id){
+        return true;
+      }
+    });
+    return found;
+
+  };
+
   return (
     <>
       <div className="Expensespage">
@@ -134,16 +170,15 @@ export default function Expensespage() {
               <Container>
                 <Row>
                   <Col xs={8}>
-                    <ButtonGroup
+                  <ButtonGroup
                       aria-label="Basic example"
                       style={{ width: "50vw" }}
                     >
                       <Button
-                        variant="secondary"
+                        variant="outline-warning"
                         style={{
-                          backgroundColor: "#f2b90c",
+                          borderColor:"#f2b90c",
                           padding: "20px",
-                          borderColor: "#f2b90c",
                           marginBottom: "2%",
                         }}
                         onClick={() => selectItemType("Expenses")}
@@ -151,11 +186,10 @@ export default function Expensespage() {
                         Expenses
                       </Button>
                       <Button
-                        variant="secondary"
+                      variant="outline-warning"
                         style={{
-                          backgroundColor: "#f2b90c",
+                          borderColor:"#f2b90c",
                           padding: "20px",
-                          borderColor: "#f2b90c",
                           marginBottom: "2%",
                         }}
                         onClick={() => selectItemType("Categories")}
@@ -471,7 +505,9 @@ export default function Expensespage() {
                                 title="Select Category"
                                 id="dropdown-menu-align-responsive-1"
                                 variant="outline-warning"
-                                onSelect={(e)=>{setCategory({"id":e});}}
+                                onSelect={(e)=>{
+                                  setCategory(findCategory(categoryArray.data,e)[0]);
+                                }}
                                 style={{
                                   marginTop: "2vh",
                                 }}
@@ -488,7 +524,7 @@ export default function Expensespage() {
                                   </Dropdown.Item>
                                 )}
                               </DropdownButton>
-
+                              <h2></h2>
                               <Form.Group className="mb-3" style={{marginTop:"3vh"}}>
                                 <Form.Control
                                   type="text"
