@@ -109,8 +109,26 @@ export default function Expensespage() {
     setSearchExpenseStatus(true);
   };
   const onCreateCategory = async () => {
-    await createCategory(category);
+    const res = await createCategory(category);
+    console.log(await createCategory(category));
+
+    if (res.ack === 0) {
+      alert("Category Edited Successfully");
+      setOpType(null);
+    } else {
+      alert("Something Went Wrong");
+    }
   };
+
+  const findCategory = (ArrayOBJ, id) => {
+    const found = ArrayOBJ.filter((ArrayOBJ) => {
+      if (ArrayOBJ.id == id) {
+        return true;
+      }
+    });
+    return found;
+  };
+
   return (
     <>
       <div className="Expensespage">
@@ -139,11 +157,10 @@ export default function Expensespage() {
                       style={{ width: "50vw" }}
                     >
                       <Button
-                        variant="secondary"
+                        variant="outline-warning"
                         style={{
-                          backgroundColor: "#f2b90c",
-                          padding: "20px",
                           borderColor: "#f2b90c",
+                          padding: "20px",
                           marginBottom: "2%",
                         }}
                         onClick={() => selectItemType("Expenses")}
@@ -151,11 +168,10 @@ export default function Expensespage() {
                         Expenses
                       </Button>
                       <Button
-                        variant="secondary"
+                        variant="outline-warning"
                         style={{
-                          backgroundColor: "#f2b90c",
-                          padding: "20px",
                           borderColor: "#f2b90c",
+                          padding: "20px",
                           marginBottom: "2%",
                         }}
                         onClick={() => selectItemType("Categories")}

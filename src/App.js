@@ -19,7 +19,7 @@ export default function App() {
   }
   function IsAuth({ children }) {
     return Cookies.get("userToken") ? (
-      <Navigate to="/expenses" replace />
+      <Navigate to="/graphs" replace />
     ) : (
       children
     );
