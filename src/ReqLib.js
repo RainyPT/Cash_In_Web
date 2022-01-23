@@ -120,6 +120,24 @@ export const getExpensesByDate = async (datebegin, dateend) => {
     return err;
   }
 };
+export const getExpensesFromCategoryByDate = async (datebegin, dateend, id) => {
+  try {
+    const res = await axios.get(
+      "api/show-expenses/category?date_begin=" +
+        datebegin +
+        "&date_end=" +
+        dateend +
+        "&category_name=" +
+        id,
+      {
+        headers: ProtectedHeaders(),
+      }
+    );
+    return res;
+  } catch (err) {
+    return err;
+  }
+};
 export const editCategory = async (id, reqOBJ) => {
   try {
     const res = await axios.put("api/categories/" + id, reqOBJ, {
