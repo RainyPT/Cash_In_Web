@@ -120,15 +120,6 @@ export default function Expensespage() {
     }
   };
 
-  const findCategory = (ArrayOBJ, id) => {
-    const found = ArrayOBJ.filter((ArrayOBJ) => {
-      if (ArrayOBJ.id == id) {
-        return true;
-      }
-    });
-    return found;
-  };
-
   return (
     <>
       <div className="Expensespage">

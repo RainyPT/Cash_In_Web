@@ -75,32 +75,45 @@ export default function Graphspage() {
                 <p className="miniTitles">Recent Activity</p>
               </center>
 
-              
-              
-              <ListGroup as="ol" numbered>
-              {loadedObj.initial_load ? (
-                expenseArray.map((c,id) => (
-                  <ListGroup.Item  className="d-flex justify-content-between align-items-start" eventKey={id}>
-                    <div className="ms-2 me-auto">
-                      <div className="fw-bold">{c.name}</div>
-                    </div>
-                    <Badge variant="primary" pill>
-                      {c.value}
-                    </Badge>
-                  </ListGroup.Item>
+              <ListGroup
+                as="ol"
+                numbered
+                style={{
+                  height: "100vh",
+                  marginTop: "2vh",
+                  overflow: "scroll",
+                  WebkitOverflowScrolling: "touch",
+                  overflowX: "hidden",
+                }}
+              >
+                {loadedObj.initial_load ? (
+                  expenseArray.map((c, id) => (
+                    <ListGroup.Item
+                      className="d-flex justify-content-between align-items-start"
+                      eventKey={id}
+                    >
+                      <div className="ms-2 me-auto">
+                        <div className="fw-bold">{c.name}</div>
+                      </div>
+                      <Badge variant="primary" pill>
+                        {c.value}
+                      </Badge>
+                    </ListGroup.Item>
                   ))
-                  ) : (
-                    <ListGroup.Item  className="d-flex justify-content-between align-items-start" disabled>
+                ) : (
+                  <ListGroup.Item
+                    className="d-flex justify-content-between align-items-start"
+                    disabled
+                  >
                     <div className="ms-2 me-auto">
                       <div className="fw-bold">no expense</div>
                     </div>
                     <Badge variant="primary" pill>
                       no value
                     </Badge>
-                    </ListGroup.Item>
-                    )}
-               </ListGroup>
-
+                  </ListGroup.Item>
+                )}
+              </ListGroup>
             </div>
           </Col>
           <Col md={{ span: 6, offset: 0.5 }}>
