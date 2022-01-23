@@ -1,6 +1,8 @@
 .Homepage {
   width: 100%;
   background-color: #fffeee;
+  background-image: url("/src/componentes/img/homepage_background.png");
+  background-attachment: scroll;
 }
 #home-title {
   text-shadow: 2px 2px #000000;
@@ -53,10 +55,14 @@
 .LoginComp {
   padding: 5%;
   background-color: #fffeee;
+  background-image: url("/src/componentes/img/login_and_register_background.png");
+  background-position-y: -20vh;
+  background-position-x: center;
 }
 .RegisterComp {
   padding: 5%;
   background-color: #fffeee;
+  background-image: url("/src/componentes/img/login_and_register_background.png");
 }
 .Expensespage {
   padding: 5%;
