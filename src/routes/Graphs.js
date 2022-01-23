@@ -5,6 +5,8 @@ import {
   Row,
   Button,
   ButtonGroup,
+  ListGroup,
+  Badge
 } from "react-bootstrap";
 import {
   LineChart,
@@ -13,9 +15,10 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend
+  Legend,
 } from "recharts";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 const data = [
   {
     name: "Page A",
@@ -68,6 +71,8 @@ const data = [
   }
 ];
 export default function Graphspage() {
+  const [categoryArray, setCategoryArray] = useState([]);
+  const [getStatus, setGetStatus] = useState(false);
   const navigate = useNavigate();
   return (
     <div className="Graphspage">
@@ -78,6 +83,31 @@ export default function Graphspage() {
               <center>
                 <p className="miniTitles">Recent Activity</p>
               </center>
+
+              <ListGroup as="ol" numbered>
+              {getStatus ? (
+                categoryArray.data.map((c) => (
+                  <ListGroup.Item  className="d-flex justify-content-between align-items-start" eventKey={c.id}>
+                    <div className="ms-2 me-auto">
+                      <div className="fw-bold">{c.name}</div>
+                    </div>
+                    <Badge variant="primary" pill>
+                      {c.value}
+                    </Badge>
+                  </ListGroup.Item>
+                  ))
+                  ) : (
+                    <ListGroup.Item  className="d-flex justify-content-between align-items-start" disabled>
+                    <div className="ms-2 me-auto">
+                      <div className="fw-bold">no expense</div>
+                    </div>
+                    <Badge variant="primary" pill>
+                      no value
+                    </Badge>
+                    </ListGroup.Item>
+                    )}
+               </ListGroup>
+
             </div>
           </Col>
           <Col md={{ span: 6, offset: 0.5 }}>
