@@ -98,7 +98,7 @@ export const searchExpense = async (name) => {
 
 export const editExpense = async (id, reqOBJ) => {
   try {
-    const res = await axios.put("api/expenses/" + id, reqOBJ,{
+    const res = await axios.put("api/expenses/" + id, reqOBJ, {
       headers: ProtectedHeaders(),
     });
     return res;
@@ -107,9 +107,22 @@ export const editExpense = async (id, reqOBJ) => {
   }
 };
 
-export const editCategory = async (id,reqOBJ) => {
+export const getExpensesByDate = async (datebegin, dateend) => {
   try {
-    const res = await axios.put("api/categories/" + id, reqOBJ,{
+    const res = await axios.get(
+      "api/show-expenses/date?date_begin=" + datebegin + "&date_end=" + dateend,
+      {
+        headers: ProtectedHeaders(),
+      }
+    );
+    return res;
+  } catch (err) {
+    return err;
+  }
+};
+export const editCategory = async (id, reqOBJ) => {
+  try {
+    const res = await axios.put("api/categories/" + id, reqOBJ, {
       headers: ProtectedHeaders(),
     });
     return res;
@@ -139,7 +152,6 @@ export const deleteExpense = async (id) => {
     return err;
   }
 };
-
 
 export const createCategory = async (reqOBJ) => {
   try {
