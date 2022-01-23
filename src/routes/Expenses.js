@@ -23,8 +23,6 @@ import {
   searchExpense,
   editExpense,
 } from "../ReqLib";
-import Expense from "../componentes/Expense";
-import Category from "../componentes/Category";
 import { useNavigate } from "react-router-dom";
 
 export default function Expensespage() {
@@ -44,13 +42,12 @@ export default function Expensespage() {
   const [opType, setOpType] = useState(null);
   const [expenseArray, setExpenseArray] = useState([]);
   const [categoryArray, setCategoryArray] = useState([]);
-  const [showModal, setShowModal] = useState(false);
   const [getStatus, setGetStatus] = useState(false);
   const [SearchExpenseStatus, setSearchExpenseStatus] = useState(false);
   useEffect(() => {
     async function expenseGetting() {
       setCategoryArray(await getUserCategories());
-      setExpenseArray(await getUserExpenses());
+      //setExpenseArray(await getUserExpenses());
       setGetStatus(true);
     }
     expenseGetting();
@@ -67,41 +64,39 @@ export default function Expensespage() {
     await saveExpense(expense);
   };
 
-  const onEditCategory = async (id,reqOBJ) => {
-
-    const res= await editCategory(id,reqOBJ);
-    if(res.status===200){
-
+  const onEditCategory = async (id, reqOBJ) => {
+    const res = await editCategory(id, reqOBJ);
+    if (res.status === 200) {
       alert("Category Edited Successfully");
       setOpType(null);
-
-    }else{alert("Something Went Wrong")}
+    } else {
+      alert("Something Went Wrong");
+    }
   };
 
   const onDeleteCategory = async (id) => {
-
-    const res= await deleteCategory(id);
-    if(res.status===200){
-
+    const res = await deleteCategory(id);
+    if (res.status === 200) {
       alert("Category Deleted Successfully");
       setOpType(null);
+    } else {
+      alert("Something Went Wrong");
+    }
+  };
 
-    }else{alert("Something Went Wrong")}
-  }
-
-  const onEditExpense = async (id,reqOBJ) => {
-    await editExpense(id,reqOBJ);
-    console.log(await editExpense(id,reqOBJ));
+  const onEditExpense = async (id, reqOBJ) => {
+    await editExpense(id, reqOBJ);
+    console.log(await editExpense(id, reqOBJ));
   };
 
   const onDeleteExpense = async (id) => {
     const res = await deleteExpense(id);
-    if(res.status===200){
-
+    if (res.status === 200) {
       alert("Expense Deleted Successfully");
       setOpType(null);
-
-    }else{alert("Something Went Wrong")}
+    } else {
+      alert("Something Went Wrong");
+    }
   };
 
   const onSearchExpense = async (nome) => {
@@ -331,7 +326,11 @@ export default function Expensespage() {
                                   boxShadow: "inset 0px 0px 4px #F2B90C",
                                   padding: "10px",
                                 }}
-                                onClick={() => { expense.name.length > 0 ? onSearchExpense(expense.name):alert("Field Can't Be Empty")}}
+                                onClick={() => {
+                                  expense.name.length > 0
+                                    ? onSearchExpense(expense.name)
+                                    : alert("Field Can't Be Empty");
+                                }}
                               >
                                 Search
                               </Button>
@@ -342,12 +341,32 @@ export default function Expensespage() {
                         <Row>
                           <Col></Col>
                           <Col>
-                            <ListGroup style={{height:"40vh",width:"30vw",marginTop:"2vh",overflow:"scroll",WebkitOverflowScrolling:"touch",overflowX:"hidden"}}>
-                            {SearchExpenseStatus ? expenseArray.data.map((c) => (
-                                <ListGroup.Item eventKey={c.id} action onClick={()=>{selectOpType("searched"); setExpense(c)}}>
-                                  {c.name}
-                                </ListGroup.Item>
-                            )):<></>}
+                            <ListGroup
+                              style={{
+                                height: "40vh",
+                                width: "30vw",
+                                marginTop: "2vh",
+                                overflow: "scroll",
+                                WebkitOverflowScrolling: "touch",
+                                overflowX: "hidden",
+                              }}
+                            >
+                              {SearchExpenseStatus ? (
+                                expenseArray.data.map((c) => (
+                                  <ListGroup.Item
+                                    eventKey={c.id}
+                                    action
+                                    onClick={() => {
+                                      selectOpType("searched");
+                                      setExpense(c);
+                                    }}
+                                  >
+                                    {c.name}
+                                  </ListGroup.Item>
+                                ))
+                              ) : (
+                                <></>
+                              )}
                             </ListGroup>
                           </Col>
                           <Col></Col>
@@ -432,7 +451,9 @@ export default function Expensespage() {
                                     boxShadow: "inset 0px 0px 4px #F2B90C",
                                     padding: "15px",
                                   }}
-                                  onClick={()=>{onEditExpense(expense.id,expense)}}
+                                  onClick={() => {
+                                    onEditExpense(expense.id, expense);
+                                  }}
                                 >
                                   Edit Expense
                                 </Button>
@@ -440,11 +461,13 @@ export default function Expensespage() {
                                 <Button
                                   variant="outline-danger"
                                   style={{
-                                    marginLeft:"5vw",
+                                    marginLeft: "5vw",
                                     boxShadow: "inset 0px 0px 4px red",
                                     padding: "15px",
                                   }}
-                                  onClick={()=>{onDeleteExpense(expense.id)}}
+                                  onClick={() => {
+                                    onDeleteExpense(expense.id);
+                                  }}
                                 >
                                   Delete Expense
                                 </Button>
@@ -464,62 +487,76 @@ export default function Expensespage() {
                           <Col></Col>
                           <Col md={8} style={{ paddingTop: "10vh" }}>
                             <Form>
-                            <center>
-                            <DropdownButton
-                                as={ButtonGroup}
-                                align={{ lg: "end" }}
-                                title="Select Category"
-                                id="dropdown-menu-align-responsive-1"
-                                variant="outline-warning"
-                                onSelect={(e)=>{setCategory({"id":e});}}
-                                style={{
-                                  marginTop: "2vh",
-                                }}
-                              >
-                                {getStatus ? (
-                                  categoryArray.data.map((c) => (
-                                    <Dropdown.Item eventKey={c.id}>
-                                      {c.name}
-                                    </Dropdown.Item>
-                                  ))
-                                ) : (
-                                  <Dropdown.Item disabled>
-                                    No Categories
-                                  </Dropdown.Item>
-                                )}
-                              </DropdownButton>
-
-                              <Form.Group className="mb-3" style={{marginTop:"3vh"}}>
-                                <Form.Control
-                                  type="text"
-                                  placeholder="Edit Category name"
-                                  onChange={(e) => setCategory({...category, name:e.target.value})}
-                                />
-                              </Form.Group>
-
-                              <Container style={{marginTop:"10vh"}}>
-                              <Button
+                              <center>
+                                <DropdownButton
+                                  as={ButtonGroup}
+                                  align={{ lg: "end" }}
+                                  title="Select Category"
+                                  id="dropdown-menu-align-responsive-1"
                                   variant="outline-warning"
-                                  style={{
-                                    boxShadow: "inset 0px 0px 4px #F2B90C",
-                                    padding: "15px",
+                                  onSelect={(e) => {
+                                    setCategory({ id: e });
                                   }}
-                                  onClick={()=>{onEditCategory(category.id,category)}}
+                                  style={{
+                                    marginTop: "2vh",
+                                  }}
                                 >
-                                  Edit Category
-                                </Button>
+                                  {getStatus ? (
+                                    categoryArray.data.map((c) => (
+                                      <Dropdown.Item eventKey={c.id}>
+                                        {c.name}
+                                      </Dropdown.Item>
+                                    ))
+                                  ) : (
+                                    <Dropdown.Item disabled>
+                                      No Categories
+                                    </Dropdown.Item>
+                                  )}
+                                </DropdownButton>
 
-                                <Button
-                                  variant="outline-danger"
-                                  style={{
-                                    marginLeft:"5vw",
-                                    boxShadow: "inset 0px 0px 4px red",
-                                    padding: "15px",
-                                  }}
-                                  onClick={()=>{onDeleteCategory(category.id)}}
+                                <Form.Group
+                                  className="mb-3"
+                                  style={{ marginTop: "3vh" }}
                                 >
-                                  Delete Category
-                                </Button>
+                                  <Form.Control
+                                    type="text"
+                                    placeholder="Edit Category name"
+                                    onChange={(e) =>
+                                      setCategory({
+                                        ...category,
+                                        name: e.target.value,
+                                      })
+                                    }
+                                  />
+                                </Form.Group>
+
+                                <Container style={{ marginTop: "10vh" }}>
+                                  <Button
+                                    variant="outline-warning"
+                                    style={{
+                                      boxShadow: "inset 0px 0px 4px #F2B90C",
+                                      padding: "15px",
+                                    }}
+                                    onClick={() => {
+                                      onEditCategory(category.id, category);
+                                    }}
+                                  >
+                                    Edit Category
+                                  </Button>
+
+                                  <Button
+                                    variant="outline-danger"
+                                    style={{
+                                      marginLeft: "5vw",
+                                      boxShadow: "inset 0px 0px 4px red",
+                                      padding: "15px",
+                                    }}
+                                    onClick={() => {
+                                      onDeleteCategory(category.id);
+                                    }}
+                                  >
+                                    Delete Category
+                                  </Button>
                                 </Container>
                               </center>
                             </Form>
