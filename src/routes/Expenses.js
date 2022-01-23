@@ -1,5 +1,4 @@
 import {
-  Card,
   Col,
   Container,
   Row,
@@ -7,13 +6,11 @@ import {
   ButtonGroup,
   ListGroup,
   Form,
-  Modal,
   Dropdown,
   DropdownButton,
 } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import {
-  getUserExpenses,
   getUserCategories,
   editCategory,
   deleteCategory,
@@ -43,11 +40,10 @@ export default function Expensespage() {
   const [expenseArray, setExpenseArray] = useState([]);
   const [categoryArray, setCategoryArray] = useState([]);
   const [getStatus, setGetStatus] = useState(false);
-  const [SearchExpenseStatus, setSearchExpenseStatus] = useState(false);
+  const [searchExpenseStatus, setSearchExpenseStatus] = useState(false);
   useEffect(() => {
     async function expenseGetting() {
       setCategoryArray(await getUserCategories());
-      //setExpenseArray(await getUserExpenses());
       setGetStatus(true);
     }
     expenseGetting();
@@ -59,9 +55,14 @@ export default function Expensespage() {
   const selectOpType = (type) => {
     setOpType(type);
   };
-  const onSaveExpense = async () => {
-    console.log(expense);
-    await saveExpense(expense);
+  const onSaveExpense = async (e) => {
+    e.preventDefault();
+    const res = await saveExpense(expense);
+    if (res.status === 201) {
+      alert("New Expense Added!");
+    } else {
+      alert("Something went wrong!");
+    }
   };
 
   const onEditCategory = async (id, reqOBJ) => {
@@ -85,8 +86,12 @@ export default function Expensespage() {
   };
 
   const onEditExpense = async (id, reqOBJ) => {
-    await editExpense(id, reqOBJ);
-    console.log(await editExpense(id, reqOBJ));
+    const res = await editExpense(id, reqOBJ);
+    if (res.status === 200) {
+      alert("Expense Edited Successfully");
+    } else {
+      alert("Something Went Wrong");
+    }
   };
 
   const onDeleteExpense = async (id) => {
@@ -215,7 +220,7 @@ export default function Expensespage() {
                         <Row>
                           <Col></Col>
                           <Col md={8} style={{ paddingTop: "10vh" }}>
-                            <Form>
+                            <Form onSubmit={onSaveExpense}>
                               <Form.Group className="mb-3">
                                 <Form.Label>Name</Form.Label>
                                 <Form.Control
@@ -264,6 +269,12 @@ export default function Expensespage() {
                                 style={{
                                   marginBottom: "10vh",
                                 }}
+                                onSelect={(e) =>
+                                  setExpense({
+                                    ...expense,
+                                    category_id: e,
+                                  })
+                                }
                               >
                                 {getStatus ? (
                                   categoryArray.data.map((c) => (
@@ -285,7 +296,7 @@ export default function Expensespage() {
                                     boxShadow: "inset 0px 0px 4px #F2B90C",
                                     padding: "15px",
                                   }}
-                                  onClick={onSaveExpense}
+                                  type="submit"
                                 >
                                   Save Expense
                                 </Button>
@@ -351,7 +362,7 @@ export default function Expensespage() {
                                 overflowX: "hidden",
                               }}
                             >
-                              {SearchExpenseStatus ? (
+                              {searchExpenseStatus ? (
                                 expenseArray.data.map((c) => (
                                   <ListGroup.Item
                                     eventKey={c.id}

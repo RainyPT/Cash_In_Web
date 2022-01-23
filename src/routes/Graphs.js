@@ -47,15 +47,20 @@ export default function Graphspage() {
     min: null,
     max: null,
   });
-  useEffect(() => {
-    async function expenseTesting() {
-      const res = await getExpensesByDate("10-12-1997", "30-1-2023");
+  async function getExpenses_By_Date(date1, date2) {
+    if (date1 !== null && date2 !== null) {
+      const res = await getExpensesByDate(date1, date2);
       if (res.status === 200) {
         setExpenseArray(res.data);
+        if (res.data.length === 0) {
+          alert("No Expenses!");
+        }
         setLoadedObj({ ...loadedObj, initial_load: true });
       }
     }
-    expenseTesting();
+  }
+  useEffect(() => {
+    getExpenses_By_Date("10-12-1997", "30-1-2023");
   }, []);
   return (
     <div className="Graphspage">
@@ -99,9 +104,27 @@ export default function Graphspage() {
                         type="date"
                         name="beginDate"
                         min={changeDates.min}
-                        placeholder="Begin Date"
+                        placeholder="End Date"
+                        onChange={(e) => {
+                          setChangeDates({
+                            ...changeDates,
+                            max: e.target.value,
+                          });
+                        }}
                       />
                     </Form.Group>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <Button
+                      style={{ width: "100%" }}
+                      onClick={() => {
+                        getExpenses_By_Date(changeDates.min, changeDates.max);
+                      }}
+                    >
+                      Get
+                    </Button>
                   </Col>
                 </Row>
               </Container>
