@@ -24,7 +24,7 @@ axios.interceptors.response.use(
         message: "Repeated or invalid credentials!",
       });
     }
-    if (error.response.status === 401) {
+    if (error.response.status === 401 || error.response.status === 403) {
       if (Cookies.get("userToken")) {
         Cookies.remove("userToken");
         localStorage.removeItem();

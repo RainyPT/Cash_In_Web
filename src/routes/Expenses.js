@@ -1,55 +1,23 @@
-import {
-  Col,
-  Container,
-  Row,
-  Button,
-  ButtonGroup,
-  ListGroup,
-  Form,
-  Dropdown,
-  DropdownButton,
-} from "react-bootstrap";
+import { Col, Container, Row, Button, ButtonGroup } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import {
-  getUserCategories,
-  editCategory,
-  deleteCategory,
-  deleteExpense,
-  saveExpense,
-  createCategory,
-  searchExpense,
-  editExpense,
-} from "../ReqLib";
+import { getUserCategories } from "../ReqLib";
 import { useNavigate } from "react-router-dom";
+import EditCategoryComponent from "../componentes/EditCategory";
+import SearchExpenseComponent from "../componentes/SearchExpense";
+import AddCategoryComponent from "../componentes/AddCategory";
+import AddExpenseComponent from "../componentes/AddExpense";
 
 export default function Expensespage() {
   //Object Expense
   const navigate = useNavigate();
-  const [expense, setExpense] = useState({
-    name: "",
-    value: null,
-    date: null,
-    category: "",
-  });
-  //Object Categories
-  const [category, setCategory] = useState({
-    id: "",
-    name: "",
-    main_category: "",
-  });
-  const [catPlaceName, setCatPlaceName] = useState("");
 
   //UI Storage
   const [itemType, setItemType] = useState("Expenses");
   const [opType, setOpType] = useState(null);
-  const [expenseArray, setExpenseArray] = useState([]);
   const [categoryArray, setCategoryArray] = useState([]);
-  const [getStatus, setGetStatus] = useState(false);
-  const [searchExpenseStatus, setSearchExpenseStatus] = useState(false);
   useEffect(() => {
     async function expenseGetting() {
       setCategoryArray(await getUserCategories());
-      setGetStatus(true);
     }
     expenseGetting();
   }, []);
@@ -60,70 +28,10 @@ export default function Expensespage() {
   const selectOpType = (type) => {
     setOpType(type);
   };
-  const onSaveExpense = async (e) => {
-    e.preventDefault();
-    const res = await saveExpense(expense);
-    if (res.status === 201) {
-      alert("New Expense Added!");
-    } else {
-      alert("Something went wrong!");
-    }
-  };
-
-  const onEditCategory = async (id, reqOBJ) => {
-    const res = await editCategory(id, reqOBJ);
-    if (res.status === 200) {
-      alert("Category Edited Successfully");
-      setOpType(null);
-    } else {
-      alert("Something Went Wrong");
-    }
-  };
-
-  const onDeleteCategory = async (id) => {
-    const res = await deleteCategory(id);
-    if (res.status === 200) {
-      alert("Category Deleted Successfully");
-      setOpType(null);
-    } else {
-      alert("Something Went Wrong");
-    }
-  };
-
-  const onEditExpense = async (id, reqOBJ) => {
-    const res = await editExpense(id, reqOBJ);
-    if (res.status === 200) {
-      alert("Expense Edited Successfully");
-    } else {
-      alert("Something Went Wrong");
-    }
-  };
-
-  const onDeleteExpense = async (id) => {
-    const res = await deleteExpense(id);
-    if (res.status === 200) {
-      alert("Expense Deleted Successfully");
-      setOpType(null);
-    } else {
-      alert("Something Went Wrong");
-    }
-  };
-
-  const onSearchExpense = async (nome) => {
-    setExpenseArray(await searchExpense(nome));
-    setSearchExpenseStatus(true);
-  };
-  const onCreateCategory = async () => {
-    const res = await createCategory({ ...category, name: catPlaceName });
-    if (res.status === 201) {
-      alert("Category Created!");
-    }
-  };
-
   return (
     <>
       <div className="Expensespage">
-        <Container style={{ height: "100vh" }}>
+        <Container>
           <Row>
             <Col>
               <Button
@@ -223,410 +131,24 @@ export default function Expensespage() {
                       </Col>
                     </Row>
                     {opType === "add" && itemType === "Expenses" ? (
-                      <>
-                        <Row>
-                          <Col></Col>
-                          <Col md={8} style={{ paddingTop: "10vh" }}>
-                            <Form onSubmit={onSaveExpense}>
-                              <Form.Group className="mb-3">
-                                <Form.Label>Name</Form.Label>
-                                <Form.Control
-                                  type="text"
-                                  placeholder="Expense name"
-                                  onChange={(e) =>
-                                    setExpense({
-                                      ...expense,
-                                      name: e.target.value,
-                                    })
-                                  }
-                                />
-                              </Form.Group>
-                              <Form.Group className="mb-3">
-                                <Form.Label>Value(€)</Form.Label>
-                                <Form.Control
-                                  type="number"
-                                  placeholder="Expense value"
-                                  onChange={(e) =>
-                                    setExpense({
-                                      ...expense,
-                                      value: e.target.value,
-                                    })
-                                  }
-                                />
-                              </Form.Group>
-                              <Form.Group className="mb-3">
-                                <Form.Label>Value</Form.Label>
-                                <Form.Control
-                                  type="date"
-                                  placeholder="Expense date"
-                                  onChange={(e) =>
-                                    setExpense({
-                                      ...expense,
-                                      date: e.target.value,
-                                    })
-                                  }
-                                />
-                              </Form.Group>
-                              <DropdownButton
-                                as={ButtonGroup}
-                                align={{ lg: "end" }}
-                                title={
-                                  expense.category_name !== ""
-                                    ? expense.category_name
-                                    : "Select Category"
-                                }
-                                id="dropdown-menu-align-responsive-1"
-                                variant="warning"
-                                style={{
-                                  marginBottom: "10vh",
-                                }}
-                                onSelect={(e) =>
-                                  setExpense({
-                                    ...expense,
-                                    category_name: e,
-                                  })
-                                }
-                              >
-                                {getStatus ? (
-                                  categoryArray.data.map((c) => (
-                                    <Dropdown.Item eventKey={c.name}>
-                                      {c.name}
-                                    </Dropdown.Item>
-                                  ))
-                                ) : (
-                                  <Dropdown.Item disabled>
-                                    No Categories
-                                  </Dropdown.Item>
-                                )}
-                              </DropdownButton>
-                              <br></br>
-                              <center>
-                                <Button
-                                  variant="outline-warning"
-                                  style={{
-                                    boxShadow: "inset 0px 0px 4px #F2B90C",
-                                    padding: "15px",
-                                  }}
-                                  type="submit"
-                                >
-                                  Save Expense
-                                </Button>
-                              </center>
-                            </Form>
-                          </Col>
-                          <Col></Col>
-                        </Row>
-                      </>
+                      <AddExpenseComponent categoryArray={categoryArray} />
                     ) : (
                       <></>
                     )}
                     {opType === "edit" && itemType === "Expenses" ? (
-                      <>
-                        <Row>
-                          <Col></Col>
-                          <Col md={8} style={{ paddingTop: "10vh" }}>
-                            <Form>
-                              <Form.Group className="mb-3">
-                                <Form.Label>Search Expense</Form.Label>
-                                <Form.Control
-                                  type="text"
-                                  placeholder="Expense name to search"
-                                  onChange={(e) =>
-                                    setExpense({
-                                      ...expense,
-                                      name: e.target.value,
-                                    })
-                                  }
-                                />
-                              </Form.Group>
-                            </Form>
-                            <center>
-                              <Button
-                                variant="outline-warning"
-                                style={{
-                                  boxShadow: "inset 0px 0px 4px #F2B90C",
-                                  padding: "10px",
-                                }}
-                                onClick={() => {
-                                  expense.name.length > 0
-                                    ? onSearchExpense(expense.name)
-                                    : alert("Field Can't Be Empty");
-                                }}
-                              >
-                                Search
-                              </Button>
-                            </center>
-                          </Col>
-                          <Col></Col>
-                        </Row>
-                        <Row>
-                          <Col></Col>
-                          <Col>
-                            <ListGroup
-                              style={{
-                                height: "40vh",
-                                width: "30vw",
-                                marginTop: "2vh",
-                                overflow: "scroll",
-                                WebkitOverflowScrolling: "touch",
-                                overflowX: "hidden",
-                              }}
-                            >
-                              {searchExpenseStatus ? (
-                                expenseArray.data.map((c) => (
-                                  <ListGroup.Item
-                                    eventKey={c.id}
-                                    action
-                                    onClick={() => {
-                                      selectOpType("searched");
-                                      setExpense(c);
-                                    }}
-                                  >
-                                    {c.name}
-                                  </ListGroup.Item>
-                                ))
-                              ) : (
-                                <></>
-                              )}
-                            </ListGroup>
-                          </Col>
-                          <Col></Col>
-                        </Row>
-                      </>
-                    ) : (
-                      <></>
-                    )}
-
-                    {opType === "searched" && itemType === "Expenses" ? (
-                      <>
-                        <Row>
-                          <Col></Col>
-                          <Col md={8} style={{ paddingTop: "10vh" }}>
-                            <Form>
-                              <Form.Group className="mb-3">
-                                <Form.Label>Edit Name</Form.Label>
-                                <Form.Control
-                                  type="text"
-                                  placeholder="Expense name"
-                                  onChange={(e) =>
-                                    setExpense({
-                                      ...expense,
-                                      name: e.target.value,
-                                    })
-                                  }
-                                />
-                              </Form.Group>
-                              <Form.Group className="mb-3">
-                                <Form.Label>Edit Value (€)</Form.Label>
-                                <Form.Control
-                                  type="number"
-                                  placeholder="Expense value"
-                                  onChange={(e) =>
-                                    setExpense({
-                                      ...expense,
-                                      value: e.target.value,
-                                    })
-                                  }
-                                />
-                              </Form.Group>
-                              <Form.Group className="mb-3">
-                                <Form.Label>Edit Date</Form.Label>
-                                <Form.Control
-                                  type="date"
-                                  placeholder="Expense date"
-                                  onChange={(e) =>
-                                    setExpense({
-                                      ...expense,
-                                      date: e.target.value,
-                                    })
-                                  }
-                                />
-                              </Form.Group>
-                              <center>
-                                <Button
-                                  variant="outline-warning"
-                                  style={{
-                                    boxShadow: "inset 0px 0px 4px #F2B90C",
-                                    padding: "15px",
-                                  }}
-                                  onClick={() => {
-                                    onEditExpense(expense.id, expense);
-                                  }}
-                                >
-                                  Edit Expense
-                                </Button>
-
-                                <Button
-                                  variant="outline-danger"
-                                  style={{
-                                    marginLeft: "5vw",
-                                    boxShadow: "inset 0px 0px 4px red",
-                                    padding: "15px",
-                                  }}
-                                  onClick={() => {
-                                    onDeleteExpense(expense.id);
-                                  }}
-                                >
-                                  Delete Expense
-                                </Button>
-                              </center>
-                            </Form>
-                          </Col>
-                          <Col></Col>
-                        </Row>
-                      </>
+                      <SearchExpenseComponent />
                     ) : (
                       <></>
                     )}
 
                     {opType === "edit" && itemType === "Categories" ? (
-                      <>
-                        <Row>
-                          <Col></Col>
-                          <Col md={8} style={{ paddingTop: "10vh" }}>
-                            <Form>
-                              <center>
-                                <DropdownButton
-                                  as={ButtonGroup}
-                                  align={{ lg: "end" }}
-                                  title="Select Category"
-                                  id="dropdown-menu-align-responsive-1"
-                                  variant="outline-warning"
-                                  onSelect={(e) => {
-                                    setCategory({ id: e });
-                                  }}
-                                  style={{
-                                    marginTop: "2vh",
-                                  }}
-                                >
-                                  {getStatus ? (
-                                    categoryArray.data.map((c) => (
-                                      <Dropdown.Item eventKey={c.id}>
-                                        {c.name}
-                                      </Dropdown.Item>
-                                    ))
-                                  ) : (
-                                    <Dropdown.Item disabled>
-                                      No Categories
-                                    </Dropdown.Item>
-                                  )}
-                                </DropdownButton>
-
-                                <Form.Group
-                                  className="mb-3"
-                                  style={{ marginTop: "3vh" }}
-                                >
-                                  <Form.Control
-                                    type="text"
-                                    placeholder="Edit Category name"
-                                    onChange={(e) =>
-                                      setCatPlaceName(e.target.value)
-                                    }
-                                  />
-                                </Form.Group>
-
-                                <Container style={{ marginTop: "10vh" }}>
-                                  <Button
-                                    variant="outline-warning"
-                                    style={{
-                                      boxShadow: "inset 0px 0px 4px #F2B90C",
-                                      padding: "15px",
-                                    }}
-                                    onClick={() => {
-                                      onEditCategory(category.id, {
-                                        name: catPlaceName,
-                                      });
-                                    }}
-                                  >
-                                    Edit Category
-                                  </Button>
-
-                                  <Button
-                                    variant="outline-danger"
-                                    style={{
-                                      marginLeft: "5vw",
-                                      boxShadow: "inset 0px 0px 4px red",
-                                      padding: "15px",
-                                    }}
-                                    onClick={() => {
-                                      onDeleteCategory(category.id);
-                                    }}
-                                  >
-                                    Delete Category
-                                  </Button>
-                                </Container>
-                              </center>
-                            </Form>
-                          </Col>
-                          <Col></Col>
-                        </Row>
-                      </>
+                      <EditCategoryComponent categoryArray={categoryArray} />
                     ) : (
                       <></>
                     )}
 
                     {opType === "add" && itemType === "Categories" ? (
-                      <>
-                        <Row>
-                          <Col></Col>
-                          <Col md={8} style={{ paddingTop: "10vh" }}>
-                            <Form>
-                              <Form.Group className="mb-3">
-                                <Form.Label>Name</Form.Label>
-                                <Form.Control
-                                  type="text"
-                                  placeholder="Category name"
-                                  onChange={(e) =>
-                                    setCatPlaceName(e.target.value)
-                                  }
-                                />
-                              </Form.Group>
-                              <DropdownButton
-                                as={ButtonGroup}
-                                align={{ lg: "end" }}
-                                title={
-                                  category.main_category !== ""
-                                    ? category.main_category
-                                    : "Select Category"
-                                }
-                                id="dropdown-menu-align-responsive-1"
-                                variant="warning"
-                                style={{
-                                  marginBottom: "10vh",
-                                }}
-                                onSelect={(e) =>
-                                  setCategory({ ...category, main_category: e })
-                                }
-                              >
-                                {getStatus ? (
-                                  categoryArray.data.map((c) => (
-                                    <Dropdown.Item eventKey={c.name}>
-                                      {c.name}
-                                    </Dropdown.Item>
-                                  ))
-                                ) : (
-                                  <Dropdown.Item disabled>
-                                    No Categories
-                                  </Dropdown.Item>
-                                )}
-                              </DropdownButton>
-                              <center>
-                                <Button
-                                  variant="outline-warning"
-                                  style={{
-                                    boxShadow: "inset 0px 0px 4px #F2B90C",
-                                    padding: "15px",
-                                  }}
-                                  onClick={onCreateCategory}
-                                >
-                                  Create Category
-                                </Button>
-                              </center>
-                            </Form>
-                          </Col>
-                          <Col></Col>
-                        </Row>
-                      </>
+                      <AddCategoryComponent categoryArray={categoryArray} />
                     ) : (
                       <></>
                     )}
