@@ -173,11 +173,13 @@ const GraphCategoryExpensesComponent = () => {
               }}
               variant="warning"
               onClick={() => {
-                getExpensesFromCategory_By_Date(
-                  changeDates.min,
-                  changeDates.max,
-                  category
-                );
+                changeDates.min && changeDates.max && category
+                  ? getExpensesFromCategory_By_Date(
+                      changeDates.min,
+                      changeDates.max,
+                      category
+                    )
+                  : alert("Please fill all fields first!");
               }}
             >
               Get Graph

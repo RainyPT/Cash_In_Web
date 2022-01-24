@@ -18,24 +18,36 @@ axios.interceptors.response.use(
     return response;
   },
   function (error) {
-    if (error.response.status === 422) {
-      return Promise.reject({
-        ack: 0,
-        message: "Repeated or invalid credentials!",
-      });
+    switch (error.response.status) {
+      case 422:
+        return Promise.reject({
+          ack: 0,
+          message: "Repeated or invalid credentials!",
+        });
+      case 401:
+        if (Cookies.get("userToken")) {
+          Cookies.remove("userToken");
+          localStorage.removeItem();
+        }
+        window.location.replace("/login");
+        return Promise.reject({
+          ack: 0,
+          message: "Not Authorized!",
+        });
+      case 403:
+        if (Cookies.get("userToken")) {
+          Cookies.remove("userToken");
+          localStorage.removeItem();
+        }
+        window.location.replace("/login");
+        alert("Please verify your email first!");
+        return Promise.reject({
+          ack: 0,
+          message: "Email not verified!",
+        });
+      default:
+        return Promise.reject({ ack: 0, message: error.response.statusText });
     }
-    if (error.response.status === 401 || error.response.status === 403) {
-      if (Cookies.get("userToken")) {
-        Cookies.remove("userToken");
-        localStorage.removeItem();
-      }
-      window.location.replace("/login");
-      return Promise.reject({
-        ack: 0,
-        message: "Not Authorized!",
-      });
-    }
-    return Promise.reject({ ack: 0, message: error.response.statusText });
   }
 );
 export const login = async (reqOBJ) => {
@@ -50,6 +62,14 @@ export const login = async (reqOBJ) => {
 export const register = async (reqOBJ) => {
   try {
     const res = await axios.post("api/register", reqOBJ, headers);
+    return res;
+  } catch (err) {
+    return err;
+  }
+};
+export const verifyEmail = async (id, hash) => {
+  try {
+    const res = await axios.get("/verify-email" + id + "/" + hash, headers);
     return res;
   } catch (err) {
     return err;

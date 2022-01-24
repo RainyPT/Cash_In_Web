@@ -1,19 +1,13 @@
 import { Col, Container, Row, Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { login, forgotPassword } from "../ReqLib";
+import { login, verifyEmail } from "../ReqLib";
 import { useState } from "react";
 import Cookies from "js-cookie";
 export default function Login() {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const navigate = useNavigate();
-  const onClickForgotPassword = async () => {
-    if (email !== "") {
-      alert("Please insert an email address!");
-      return;
-    }
-    let res = await forgotPassword({ email: email });
-  };
+
   const onClickLogin = async () => {
     let res = await login({
       email: email,
@@ -61,11 +55,6 @@ export default function Login() {
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <label htmlFor="floatingPasswordCustom">Password</label>
-              </Form.Floating>
-              <Form.Floating>
-                <a href="/" onClick={onClickForgotPassword}>
-                  Forgot Password
-                </a>
               </Form.Floating>
 
               <Button
