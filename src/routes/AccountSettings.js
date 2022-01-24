@@ -9,7 +9,9 @@ export default function AccountSettings() {
     new_password_confirmation: "",
   });
   const onClickHandle = async () => {
-    await changeUserPassword(userChange);
+    await changeUserPassword(userChange).then((res) =>
+      alert("Password was changed")
+    );
   };
   return (
     <div className="AccountSettingsPage">

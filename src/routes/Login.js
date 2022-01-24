@@ -15,7 +15,10 @@ export default function Login() {
     let res = await forgotPassword({ email: email });
   };
   const onClickLogin = async () => {
-    let res = await login({ email: email, password: password });
+    let res = await login({
+      email: email,
+      password: password,
+    });
     if (res.ack === 0) {
       alert(res.message);
       return;

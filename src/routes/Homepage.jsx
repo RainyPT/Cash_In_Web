@@ -3,6 +3,9 @@ import LOGO_UBI from "../componentes/img/LOGO_UBI.png";
 import logoIW from "../componentes/img/logoIW.png";
 import LOGO_DI from "../componentes/img/dilogo.png";
 import CHICO_IMG from "../componentes/img/chico.jpeg";
+import duarte_img from "../componentes/img/duarte.png";
+import daniela_img from "../componentes/img/daniela.png";
+import renato_img from "../componentes/img/renato.png";
 import { Col, Container, Row, Button } from "react-bootstrap";
 import PersonCard from "../componentes/PersonCard";
 import { useNavigate } from "react-router-dom";
@@ -128,17 +131,23 @@ function Homepage() {
           <Col>
             <PersonCard
               name="Renato Quelhas"
-              desc="Frontend Programmer and Designer"
+              desc="Frontend Programmer"
+              src={renato_img}
             />
           </Col>
           <Col>
             <PersonCard
               name="Duarte Gonçalves"
-              desc="Frontend Programmer and Team Manager"
+              desc="Frontend Programmer"
+              src={duarte_img}
             />
           </Col>
           <Col>
-            <PersonCard name="Daniela Martins" desc="Backend Programmer" />
+            <PersonCard
+              name="Daniela Martins"
+              desc="Backend Programmer"
+              src={daniela_img}
+            />
           </Col>
         </Row>
       </Container>

@@ -14,6 +14,7 @@ export default function Register() {
       name: firstName + " " + lastName,
       email: email,
       password: password,
+      password_confirmation: password,
     });
     if (res.ack === 0) {
       alert(res.message);
