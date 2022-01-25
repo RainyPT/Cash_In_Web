@@ -9,6 +9,7 @@ import Expensespage from "./routes/Expenses";
 import Graphspage from "./routes/Graphs";
 import Cookies from "js-cookie";
 import AccountSettings from "./routes/AccountSettings";
+import VerifyEmail from "./routes/VerifyEmail";
 export default function App() {
   function RequireAuth({ children }) {
     return Cookies.get("userToken") ? (
@@ -41,6 +42,14 @@ export default function App() {
           element={
             <IsAuth>
               <Login />
+            </IsAuth>
+          }
+        />
+        <Route
+          path="verifyEmail"
+          element={
+            <IsAuth>
+              <VerifyEmail />
             </IsAuth>
           }
         />

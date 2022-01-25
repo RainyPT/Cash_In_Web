@@ -1,5 +1,5 @@
 import { Col, Container, Row, Button, Form } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { login, verifyEmail } from "../ReqLib";
 import { useState } from "react";
 import Cookies from "js-cookie";
@@ -56,7 +56,16 @@ export default function Login() {
                 />
                 <label htmlFor="floatingPasswordCustom">Password</label>
               </Form.Floating>
-
+              <Form.Floating>
+                <a
+                  href="#"
+                  onClick={() => {
+                    navigate("/verifyEmail");
+                  }}
+                >
+                  Verify Email
+                </a>
+              </Form.Floating>
               <Button
                 style={{
                   backgroundColor: "#f2b90c",
